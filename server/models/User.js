@@ -23,9 +23,9 @@ const userSchema=mongoose.Schema({
         type:String,
         required:true
     },
-    courses:[{
+    items:[{
         type:mongoose.Schema.Types.ObjectId
-        ,ref:"courseProgress"
+        ,ref:"Items"
     }]
 })
 
