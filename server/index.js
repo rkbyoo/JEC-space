@@ -29,6 +29,10 @@ app.use(cookieParser())
 // }))
 
 
+
+
+//idk
+
 //database connection
 connectDb()
 connectCloudinary()
