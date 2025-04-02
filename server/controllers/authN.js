@@ -1,6 +1,7 @@
 //import the required models
 const User=require("../models/userModel")
 const bcrypt=require("bcrypt")
+const jwt=require("jsonwebtoken")
 // sign up of user
 exports.signUp=async(req,res)=>{
 
@@ -41,11 +42,42 @@ exports.signUp=async(req,res)=>{
 
 
 //user login 
+exports.login=async(req,res)=>{
     //data validation
+    const{email,password}=req.body
+    const user=User.findOne({email})
+    if(!email || !password){
+        res.status(404).json({
+            success:false,
+            message:"required information is missing"
+        })
+    }
+    if(!user){
+        return res.status(404).json({
+            success:false,
+            message:"the user doesn't exist"
+        })
+    }
     //if user is active or not(posssibility is that admin has blocked the user)
+    
     //compare the passwords 
-    //create and assign token 
+    
+    if(!bcrypt.compare(user.password,password)){
+       return res.status(403).json({
+            success:false,
+            message:"invalid password"
+        })
+    }
+    
+    //create and assign token
     //send res
+    return res.status(200).json({
+        success:true,
+        message:"login successful",
+        token:token
+    })
+}
+    
 
 //get current user 
 
