@@ -1,10 +1,16 @@
 import React from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import { Link } from 'react-router-dom'
+import { LoginUser } from '../apicalls/users'
 
 function Login() {
-    const onFinish = (values) => {
-        console.log("success", values)
+    const onFinish = async(values) => {
+       try {
+        const response=await LoginUser(values)
+        return response
+       } catch (error) {
+        return console.log("some error while login",error)
+       }
     }
     return (
         <div className='h-screen flex flex-col justify-center items-center text-center'>
