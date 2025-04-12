@@ -1,9 +1,10 @@
 import React from 'react'
 import { Form, Input, Button, message } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { SingupUser } from '../apicalls/users'
 
 function Signup() {
+
     const onFinish = async(values) => {
         try {
             const response=await SingupUser(values)
