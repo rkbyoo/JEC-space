@@ -8,7 +8,7 @@ export const SingupUser=async(payload)=>{
         const response=await axiosInstance.post("/users/signup",payload)
         return response
     } catch (error) {
-        return error.message
+        throw error
     }
 }
 
@@ -19,7 +19,7 @@ export const LoginUser=async(payload)=>{
         const response=await axiosInstance.post("/users/login",payload)
         return response
     } catch (error) {
-        return error.message
+        throw error
         
     }
 }

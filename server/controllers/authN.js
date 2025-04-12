@@ -20,7 +20,7 @@ exports.signUp=async(req,res)=>{
         //check if the email already registered or not 
     const user=await User.findOne({email})
     if(user){
-        return res.status(403).json({
+        return res.status(401).json({
             status:false,
             message:"user already exists"
         })
@@ -87,7 +87,7 @@ exports.login=async(req,res)=>{
     return res.status(200).json({
         success:true,
         message:"login successful",
-        token:token
+        data:token
     })
     } catch (error) {
         console.error(error)

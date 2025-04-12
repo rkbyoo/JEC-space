@@ -4,20 +4,21 @@ import { Link } from 'react-router-dom'
 import { LoginUser } from '../apicalls/users'
 
 function Login() {
-    const onFinish = async(values) => {
-       try {
-        const response=await LoginUser(values)
-        if(response.ok){
-            localStorage.setItem("token",response?.token)
-            message.success(response.message)
+    const onFinish = async (values) => {
+        try {
+          const response = await LoginUser(values)
+          if (response.data.success) {
+            localStorage.setItem("token",response.data)
+            message.success(response.data.message)
+          } else {
+            message.error(response.data.message || "Login failed")
+          }
+        } catch (error) {
+          console.log("Some error while login", error)
+          message.error("Login failed. Please try again.")
         }
-        else{
-            throw new Error(response.message)
-        }
-       } catch (error) {
-        return console.log("some error while login",error)
-       }
-    }
+      }
+      
     return (
         <div className='h-screen flex flex-col justify-center items-center text-center'>
             <Link to="/" className='cursor-default'>

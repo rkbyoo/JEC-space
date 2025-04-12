@@ -5,19 +5,24 @@ import { SingupUser } from '../apicalls/users'
 
 function Signup() {
 
-    const onFinish = async(values) => {
+    const onFinish = async (values) => {
         try {
-            const response=await SingupUser(values)
-            if(response.success){
-                return message.success(response.message)
+            const response = await SingupUser(values);
+            console.log(response)
+    
+            // Always access actual data using response.data
+            if (response.status==200) {
+                await message.success(response.data.message);
+            } else {
+                await message.error(response.data.message || "Signup failed");
             }
-            else{
-                throw new Error(response.message)
-            }
+    
         } catch (error) {
-            message.error(error.message)
+            await message.error(error.response?.data?.message || error.message);
         }
-    }
+    };
+    
+      
 
     return (
         <div className='h-screen flex flex-col justify-center items-center text-center'>
