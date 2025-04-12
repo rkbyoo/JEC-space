@@ -1,10 +1,21 @@
 import React from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import { Link } from 'react-router-dom'
+import { SingupUser } from '../apicalls/users'
 
 function Signup() {
-    const onFinish = (values) => {
-        console.log("success", values)
+    const onFinish = async(values) => {
+        try {
+            const response=await SingupUser(values)
+            if(response.success){
+                return message.success(response.message)
+            }
+            else{
+                throw new Error(response.message)
+            }
+        } catch (error) {
+            message.error(error.message)
+        }
     }
 
     return (
