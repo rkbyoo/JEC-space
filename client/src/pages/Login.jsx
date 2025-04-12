@@ -7,7 +7,13 @@ function Login() {
     const onFinish = async(values) => {
        try {
         const response=await LoginUser(values)
-        return response
+        if(response.ok){
+            localStorage.setItem("token",response?.token)
+            message.success(response.message)
+        }
+        else{
+            throw new Error(response.message)
+        }
        } catch (error) {
         return console.log("some error while login",error)
        }
