@@ -1,16 +1,22 @@
+//import important starters
 const express=require("express")
 const app=express()
-
-
+const cookieParser = require("cookie-parser")
+// const cors=require("cors")
+// const fileupload=require("express-fileupload")
+//import database connection functions
 
 const {connectDb}=require("./config/connectDb")
 const {connectCloudinary}=require("./config/cloudinary")
 
+//import necessary routes
+const userRoute=require("./routes/userRoute")
+const productRoute=require("./routes/productRoute")
+const offerRoute=require("./routes/offerRoute")
+const notificationRoute=require("./routes/notificationRoute")
 
 
-const cookieParser = require("cookie-parser")
-// const cors=require("cors")
-// const fileupload=require("express-fileupload")
+
 
 require("dotenv").config()
 const PORT=process.env.PORT || 4000
@@ -20,13 +26,18 @@ const PORT=process.env.PORT || 4000
 //     useTempFiles:true,
 //     tempFileDir:"/tmp"
 // }))
-app.use(express.json())
-app.use(cookieParser())
 
 // app.use(cors({
 //     origin:"http://localhost:3000",
 //     credentials:true
 // }))
+app.use(express.json())
+app.use(cookieParser())
+//routes middleware (mounting)
+app.use("/api/users",userRoute)
+app.use("/api/product",productRoute)
+app.use("/api/offer",offerRoute)
+app.use("/api/notification",notificationRoute)
 
 
 
