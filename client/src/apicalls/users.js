@@ -6,7 +6,7 @@ import axiosInstance from "./axiosInstance";
 export const SingupUser=async(payload)=>{
     try {
         const response=await axiosInstance.post("/users/signup",payload)
-        return response
+        return response.data
     } catch (error) {
         throw error
     }
@@ -17,9 +17,19 @@ export const SingupUser=async(payload)=>{
 export const LoginUser=async(payload)=>{
     try {
         const response=await axiosInstance.post("/users/login",payload)
-        return response
+        return response.data
     } catch (error) {
         throw error
         
+    }
+}
+
+//get current user 
+export const GetCurrentUser=async()=>{
+    try {
+        const response=await axiosInstance.post("/users/get-current-user")
+        return response.data
+    } catch (error) {
+        throw error
     }
 }
