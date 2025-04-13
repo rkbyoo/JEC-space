@@ -100,6 +100,10 @@ exports.login=async(req,res)=>{
 }
     
 
+
+
+//below are the logic of protected routes 
+
 //get current user 
 
 
