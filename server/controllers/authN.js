@@ -105,7 +105,31 @@ exports.login=async(req,res)=>{
 //below are the logic of protected routes 
 
 //get current user 
-
+exports.getCurrentUser=async(req,res)=>{
+    try {
+         //get the userid 
+        const userId=req.body.userId
+        //find the user,get all data and return res
+        const user=await User.findById(userId)
+        if(!user){
+            return res.status(404).json({
+                success:false,
+                message:"unable to find the user"
+            })
+        }
+        res.status(200).json({
+            success:true,
+            message:"User Fetched successfully",
+            data:user
+        })
+    } catch (error) {
+        console.error("some error occured in fetching user data:",error)
+        res.status(500).json({
+            success:false,
+            message:"internal server error in fetching user data"
+        })
+    }
+}
 
 //get all user (admin ke liye chaiye yeh)
 
