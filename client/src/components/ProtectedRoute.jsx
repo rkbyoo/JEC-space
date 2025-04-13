@@ -32,10 +32,9 @@ function ProtectedRoute({children}) {
     useEffect(()=>{
         if(localStorage.getItem("token")){
             validateToken()   
-            navigate("/")
         }
         else{
-
+            message.error("You are not logged in")
             navigate("/login")
         }
     },[])

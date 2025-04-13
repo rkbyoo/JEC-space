@@ -1,10 +1,11 @@
 import React from 'react'
 import { Form, Input, Button, message } from 'antd'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
 import { SingupUser } from '../apicalls/users'
+import { useEffect } from 'react'
 
 function Signup() {
-
+    const navigate=useNavigate()
     const onFinish = async (values) => {
         try {
             const response = await SingupUser(values);
@@ -22,7 +23,12 @@ function Signup() {
         }
     };
     
-      
+        useEffect(()=>{
+              if(localStorage.getItem("token")){
+                  navigate("/")
+              }
+            },[])
+            
 
     return (
         <div className='h-screen flex flex-col justify-center items-center text-center'>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, Input, Button, message } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { LoginUser } from '../apicalls/users'
@@ -23,6 +23,12 @@ function Login() {
           message.error("Login failed. Please try again.")
         }
       }
+
+      useEffect(()=>{
+        if(localStorage.getItem("token")){
+            navigate("/")
+        }
+      },[])
       
     return (
         <div className='h-screen flex flex-col justify-center items-center text-center'>
