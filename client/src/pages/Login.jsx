@@ -7,9 +7,10 @@ function Login() {
     const onFinish = async (values) => {
         try {
           const response = await LoginUser(values)
-          if (response.data.success) {
+          console.log(response)
+          if (response.success) {
             localStorage.setItem("token",response.data)
-            message.success(response.data.message)
+            message.success(response.message)
           } else {
             message.error(response.data.message || "Login failed")
           }

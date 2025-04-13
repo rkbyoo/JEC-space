@@ -17,7 +17,7 @@ export const SingupUser=async(payload)=>{
 export const LoginUser=async(payload)=>{
     try {
         const response=await axiosInstance.post("/users/login",payload)
-        return response.data
+        return response.data //it will give the actual response which i have set on the backend
     } catch (error) {
         throw error
         
@@ -33,3 +33,19 @@ export const GetCurrentUser=async()=>{
         throw error
     }
 }
+
+
+
+
+
+//the response of the axios is having the json object like 
+
+//{
+    // status:200,
+    // data:{ 
+    //     success:false,
+    //     message:"some message here",
+    //     data:"actual data here which i have to passed from backend"
+    // }
+
+//}

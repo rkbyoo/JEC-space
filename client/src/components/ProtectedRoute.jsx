@@ -1,7 +1,6 @@
-import React, { Children, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { GetCurrentUser } from '../apicalls/users'
 import { message } from 'antd'
-import { getCurrentUser } from '../../../server/controllers/authN'
 import { useNavigate } from 'react-router-dom'
 
 //in protected route we are going to wrap the children component so that only authorized one can access those pages 
@@ -11,7 +10,7 @@ function ProtectedRoute({children}) {
     const navigate=useNavigate()
     const validateToken=async()=>{
         try {
-            const response=await getCurrentUser()
+            const response=await GetCurrentUser()
             if(response.success){
                 setuser(response.data)
                 navigate("/")
