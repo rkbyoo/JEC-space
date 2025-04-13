@@ -14,7 +14,6 @@ router.post("/signup",signUp)
 router.post("/login",login)
 //get current user by route /get-current-user
 router.get("/get-current-user",authZ,getCurrentUser)
-
 //get all user by route /get-user
 
 

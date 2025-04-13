@@ -1,18 +1,22 @@
 import React from 'react'
 import { Form, Input, Button, message } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { LoginUser } from '../apicalls/users'
 
+
 function Login() {
+    const navigate=useNavigate()
     const onFinish = async (values) => {
+
         try {
           const response = await LoginUser(values)
           console.log(response)
           if (response.success) {
             localStorage.setItem("token",response.token)
             message.success(response.message)
+            navigate("/")
           } else {
-            message.error(response.data.message || "Login failed")
+            message.error(response.message || "Login failed")
           }
         } catch (error) {
           console.log("Some error while login", error)
