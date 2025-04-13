@@ -9,7 +9,7 @@ function Login() {
           const response = await LoginUser(values)
           console.log(response)
           if (response.success) {
-            localStorage.setItem("token",response.data)
+            localStorage.setItem("token",response.token)
             message.success(response.message)
           } else {
             message.error(response.data.message || "Login failed")
