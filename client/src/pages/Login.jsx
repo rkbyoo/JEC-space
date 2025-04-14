@@ -25,9 +25,10 @@ function Login() {
       }
 
       useEffect(()=>{
-        if(localStorage.getItem("token")){
-            navigate("/")
-        }
+            if(localStorage.getItem("token")){
+                navigate("/")
+            }
+       
       },[])
       
     return (

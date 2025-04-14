@@ -19,12 +19,11 @@ function ProtectedRoute({children}) {
                 navigate("/")
             }
             else{
-                message.error(error.message)
+                message.error("token is not valid")
                 navigate("/login")
             }
         } catch (error) {
             message.error(error.message)
-            navigate("/login")
         }
     }
 
