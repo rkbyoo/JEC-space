@@ -6,11 +6,8 @@ require("dotenv").config()
 exports.authZ=async(req,res,next)=>{
     try {
         //parse the token from header
-        console.log("Authorization Header:", req.headers.authorization);
         const token=req.header("authorization").split(" ")[1];
         //decrypt the token using verify 
-        console.log("my token which i am gettig",token)
-        console.log()
         const decryptedToken=jwt.verify(token,process.env.JWT_SECRET)
         //pass the token as request for the next function 
         req.body.userId=decryptedToken.userId

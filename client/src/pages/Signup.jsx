@@ -12,14 +12,15 @@ function Signup() {
             console.log(response)
     
             // Always access actual data using response.data
-            if (response.status==200) {
-                await message.success(response.data.message);
+            if (response.success) {
+                message.success(response.message);
+                navigate("/login")
             } else {
-                await message.error(response.data.message || "Signup failed");
+                message.error(response.message || "Signup failed");
             }
     
         } catch (error) {
-            await message.error(error.response?.data?.message || error.message);
+            message.error(error.response.message || error.message);
         }
     };
     
