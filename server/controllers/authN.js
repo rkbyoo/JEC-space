@@ -132,6 +132,41 @@ exports.getCurrentUser=async(req,res)=>{
 }
 
 //get all user (admin ke liye chaiye yeh)
+exports.getAllUser=async(req,res)=>{
+    
+    try {
+        //find all the user from db
+        const user=await User.find()
+        //some extra validations
+        if(!user){
+            return res.status(404).json({
+                success:false,
+                message:"no user data found"
+            })
+        }
+        //return all the user in response
+        return res.status(200).json({
+            success:true,
+            message:"all user data fetched successfully",
+            data:user
+        })
+    } catch (error) {
+        console.error("some error in fetching all user data",error)
+        res.status(500).json({
+            success:false,
+            message:"internal server error while fetching user data"
+        })
+    }
+
+}
+
+//update user status (admin can change the user status to inactive ofc)
+ exports.updateUserStatus=async(req,res)=>{
+    //get the info of the user
+    
+    //check if the user exists or not
+    //update the user info in database
+    //return response
+ }
 
 
-//update user status 
