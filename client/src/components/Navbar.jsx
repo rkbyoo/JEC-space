@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
         setIsLoggedIn(!!token);
-    }, []);
+    }, [location]); // triggers on route change
 
     const handleToggle = () => {
         if (isLoggedIn) {
             localStorage.removeItem("token");
-            setIsLoggedIn(false);
+            setIsLoggedIn(false); // update immediately
+            navigate("/login");   // or wherever you want to go after logout
         } else {
-            window.location.href = "/login";
+            navigate("/login"); // go to login page
         }
     };
 
