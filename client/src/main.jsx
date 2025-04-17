@@ -1,14 +1,17 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { App as AntdApp } from 'antd';
 import { ConfigProvider} from 'antd';
+import { Provider } from "react-redux";
+// import { StrictMode } from 'react'
+import store from "./redux/store";
 
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ConfigProvider theme={{
+  
+    <Provider store={store}>
+     <ConfigProvider theme={{
       components:{
         Button:{
         colorPrimary:'#40513B',
@@ -22,5 +25,7 @@ createRoot(document.getElementById('root')).render(
       </AntdApp>
       
     </ConfigProvider>
-  </StrictMode>
+   </Provider>
+  
+   
 )
