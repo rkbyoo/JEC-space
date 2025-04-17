@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { AiFillHome } from "react-icons/ai";
+import { FcAbout } from "react-icons/fc";
+import { IoIosContact } from "react-icons/io";
 import { GetCurrentUser } from "../apicalls/users";
 
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [username, setUsername] = useState(""); // State to store the username
+    const [username, setUsername] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -13,78 +16,80 @@ const Navbar = () => {
         setIsLoggedIn(!!token);
 
         if (token) {
-            fetchUsername(); // Fetch username if logged in
+            fetchUsername();
         } else {
-            setUsername(""); // Clear username if logged out
+            setUsername("");
         }
-
-    }, [location]); // triggers on route change
+    }, [location]);
 
     const fetchUsername = async () => {
         try {
             const response = await GetCurrentUser();
             if (response.success) {
-                setUsername(response.data.name); // Set the username from the response
+                setUsername(response.data.name);
             } else {
                 setUsername("");
             }
         } catch (error) {
-            console.error("Error fetching username:", error);
+            console.error("Error fetching user:", error);
             setUsername("");
         }
     };
 
-    const handleToggle = () => {
-        if (isLoggedIn) {
-            localStorage.removeItem("token");
-            setIsLoggedIn(false); // update immediately
-            navigate("/login");   // or wherever you want to go after logout
-        } else {
-            navigate("/login"); // go to login page
-        }
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+        navigate("/login");
     };
 
     return (
-        <nav className="flex justify-between items-center px-6 py-4 bg-gray-800 text-white text-center">
-            <ul className="flex space-x-6">
-                <li>
-                    <Link to="/" className="hover:text-blue-400 transition-colors duration-200">
-                        Home
+        <div className="h-screen w-20 md:w-60 bg-gray-900 text-white flex flex-col justify-between p-4 fixed">
+            {/* Top nav items */}
+            <div className="space-y-8 mt-6">
+                <Link to="/" className="flex items-center space-x-3 hover:text-blue-400 transition">
+                    <AiFillHome size={24} />
+                    <span className="hidden md:inline">Home</span>
+                </Link>
+
+                <Link to="/about" className="flex items-center space-x-3 hover:text-blue-400 transition">
+                    <FcAbout size={24} />
+                    <span className="hidden md:inline">About</span>
+                </Link>
+
+                <Link to="/contact" className="flex items-center space-x-3 hover:text-blue-400 transition">
+                    <IoIosContact size={24} />
+                    <span className="hidden md:inline">Contact</span>
+                </Link>
+            </div>
+
+            {/* Bottom profile section */}
+            <div className="space-y-2">
+                {isLoggedIn && (
+                    <Link
+                        to="/profile"
+                        className="flex items-center space-x-3 hover:bg-gray-800 p-2 rounded transition"
+                    >
+                        {/* Profile Picture */}
+                        <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-lg font-bold uppercase text-white">
+                            {username ? username.charAt(0) : "G"}
+                        </div>
+
+                        {/* Username beside the picture */}
+                        <span className="text-base font-medium hidden md:inline">
+                            {username}
+                        </span>
                     </Link>
-                </li>
-                <li>
-                    <Link to="/about" className="hover:text-blue-400 transition-colors duration-200">
-                        About
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/contact" className="hover:text-blue-400 transition-colors duration-200">
-                        Contact
-                    </Link>
-                </li>
-            </ul>
-            {/* Logut and Username*/}
-            <div className="flex items-center space-x-4">
+                )}
+
+                {/* Logout/Login button */}
                 <button
-                    onClick={handleToggle}
-                    className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition duration-200"
+                    onClick={handleLogout}
+                    className="w-full mt-4 py-1 bg-blue-500 hover:bg-blue-600 rounded text-sm transition hidden md:block"
                 >
                     {isLoggedIn ? "Logout" : "Login"}
                 </button>
-
-                <div className="flex items-center space-x-2">
-                    {/* Profile Circle */}
-                    <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-lg font-bold uppercase">
-                        {isLoggedIn && username ? username.charAt(0) : "G"}
-                    </div>
-
-                    {/* Username */}
-                    <span className="font-medium">
-                        {isLoggedIn && username ? username : "Guest"}
-                    </span>
-                </div>
             </div>
-        </nav>
+        </div>
     );
 };
 

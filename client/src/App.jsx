@@ -12,7 +12,8 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <Navbar></Navbar>
+      <Navbar />
+      <div className="ml-20 md:ml-60 p-4"> {/* Add margin-left to match sidebar width */}
         <Routes>
           <Route path='/' element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
           <Route path='/login' element={<Login />} />
@@ -21,6 +22,7 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='*' element={<Notfoundpage />} />
         </Routes>
+      </div>
       </BrowserRouter>
     </div>
   );
