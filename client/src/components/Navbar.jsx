@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { AiFillHome } from "react-icons/ai";
-import { FcAbout } from "react-icons/fc";
+import { AiFillHome,AiOutlineInfoCircle } from "react-icons/ai";
 import { IoIosContact } from "react-icons/io";
 import { GetCurrentUser } from "../apicalls/users";
 
@@ -43,7 +42,7 @@ const Navbar = () => {
     };
 
     return (
-        <div className="h-screen w-20 md:w-60 bg-gray-900 text-white flex flex-col justify-between p-4 fixed">
+        <div className="h-screen w-20 md:w-60 bg-gray-900 text-white flex flex-col justify-between p-10 fixed">
             {/* Top nav items */}
             <div className="space-y-8 mt-6">
                 <Link to="/" className="flex items-center space-x-3 hover:text-blue-400 transition">
@@ -52,7 +51,7 @@ const Navbar = () => {
                 </Link>
 
                 <Link to="/about" className="flex items-center space-x-3 hover:text-blue-400 transition">
-                    <FcAbout size={24} />
+                    <AiOutlineInfoCircle size={24} />
                     <span className="hidden md:inline">About</span>
                 </Link>
 
@@ -63,7 +62,7 @@ const Navbar = () => {
             </div>
 
             {/* Bottom profile section */}
-            <div className="space-y-2">
+            <div className="space-y-3">
                 {isLoggedIn && (
                     <Link
                         to="/profile"

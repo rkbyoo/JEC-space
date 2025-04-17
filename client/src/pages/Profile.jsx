@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Notfoundpage() {
+function Profile() {
   return (
     <div className='text-white'>
-      page not found
+      Profile page
     </div>
   )
 }
 
-export default Notfoundpage
+export default Profile

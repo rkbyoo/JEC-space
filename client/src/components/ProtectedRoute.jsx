@@ -43,7 +43,6 @@ function ProtectedRoute({ children }) {
             {
                 user && (
                     <div className='p-5 text-white'>
-                        {user.name}
                         {children}
                     </div>
                 )

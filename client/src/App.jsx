@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
+          <Route path='/profile' element={<Profile/>} />
           <Route path='*' element={<Notfoundpage />} />
         </Routes>
       </div>
