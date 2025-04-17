@@ -8,7 +8,6 @@ import Navbar from "./components/Navbar";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 
-
 function App() {
   return (
     <div>
