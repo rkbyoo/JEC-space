@@ -2,35 +2,41 @@ import React, { useEffect } from 'react'
 import { Form, Input, Button, message } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { LoginUser } from '../apicalls/users'
+import { useDispatch } from 'react-redux'
+import { SetLoader } from '../redux/loadersSlice'
 
 
 function Login() {
-    const navigate=useNavigate()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
     const onFinish = async (values) => {
 
         try {
-          const response = await LoginUser(values)
-          console.log(response)
-          if (response.success) {
-            localStorage.setItem("token", response.token)
-            message.success(response.message)
-            navigate("/")
-          } else {
-            message.error(response.message || "Login failed")
-          }
-        } catch (error) {
-          console.log("Some error while login", error)
-          message.error("Login failed. Please try again.")
-        }
-      }
-
-      useEffect(()=>{
-            if(localStorage.getItem("token")){
+            dispatch(SetLoader(true))
+            const response = await LoginUser(values)
+            dispatch(SetLoader(false))
+            console.log(response)
+            if (response.success) {
+                localStorage.setItem("token", response.token)
+                message.success(response.message)
                 navigate("/")
+            } else {
+                message.error(response.message || "Login failed")
             }
-       
-      },[])
-      
+        } catch (error) {
+            dispatch(SetLoader(false))
+            console.log("Some error while login", error)
+            message.error("Login failed. Please try again.")
+        }
+    }
+
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            navigate("/")
+        }
+
+    }, [])
+
     return (
         <div className='h-screen flex flex-col justify-center items-center text-center'>
             <Link to="/" className='cursor-default'>
@@ -61,7 +67,7 @@ function Login() {
                 </Form>
             </div>
         </div>
-  )
+    )
 }
 
 export default Login

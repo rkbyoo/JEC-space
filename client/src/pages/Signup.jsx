@@ -3,14 +3,18 @@ import { Form, Input, Button, message } from 'antd'
 import { Link, useNavigate} from 'react-router-dom'
 import { SingupUser } from '../apicalls/users'
 import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { SetLoader } from '../redux/loadersSlice'
 
 function Signup() {
     const navigate=useNavigate()
+    const dispatch=useDispatch()
     const onFinish = async (values) => {
         try {
+            dispatch(SetLoader(true))
             const response = await SingupUser(values);
             console.log(response)
-    
+            dispatch(SetLoader(false))
             // Always access actual data using response.data
             if (response.success) {
                 message.success(response.message);
@@ -20,6 +24,7 @@ function Signup() {
             }
     
         } catch (error) {
+            dispatch(SetLoader(false))
             message.error(error.response.message || error.message);
         }
     };

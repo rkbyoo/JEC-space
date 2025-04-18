@@ -8,13 +8,17 @@ import Navbar from "./components/Navbar";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
+import Loader from "./components/Loader";
+import {useSelector} from "react-redux";
 
 function App() {
+  const {loading}=useSelector(state=>state.loaders)
   return (
     <div>
       <BrowserRouter>
       <Navbar />
       <div className="ml-20 md:ml-60 p-4"> {/* Add margin-left to match sidebar width */}
+        {loading && <Loader></Loader>}
         <Routes>
           <Route path='/' element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
           <Route path='/login' element={<Login />} />
