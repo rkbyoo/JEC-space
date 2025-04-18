@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { GetCurrentUser } from '../apicalls/users'
 import { message } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch} from 'react-redux'
 import { SetLoader } from '../redux/loadersSlice'
 import { SetUser } from '../redux/usersSlice'
-
+import { useSelector } from 'react-redux'
 
 //in protected route we are going to wrap the children component so that only authorized one can access those pages 
 
 function ProtectedRoute({ children }) {
-    const dispatch = useDispatch()
-    // const [user, setuser] = useState(null) //it is the data recieved from the backend
     const {user}=useSelector((state)=>state.users)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
-
     //validate function will make a api request using getcurrentuser instance and tell us that if the token is present or not and on the basis of that the user will be logged in
     const validateToken = async () => {
         try {

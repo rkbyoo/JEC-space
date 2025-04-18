@@ -17,10 +17,10 @@ export const SingupUser=async(payload)=>{
 export const LoginUser=async(payload)=>{
     try {
         const response=await axiosInstance.post("/users/login",payload)
+        console.log(response.data)
         return response.data //it will give the actual response which i have set on the backend
     } catch (error) {
         throw error
-        
     }
 }
 

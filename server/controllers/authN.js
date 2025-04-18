@@ -117,6 +117,7 @@ exports.getCurrentUser=async(req,res)=>{
                 message:"unable to find the user"
             })
         }
+        user.password="not possible to see password okeeeeee"
         res.status(200).json({
             success:true,
             message:"User Fetched successfully",

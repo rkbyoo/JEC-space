@@ -2,38 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AiFillHome,AiOutlineInfoCircle } from "react-icons/ai";
 import { IoIosContact } from "react-icons/io";
-import { GetCurrentUser } from "../apicalls/users";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+    const {user}=useSelector((state)=>state.users)
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [username, setUsername] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
         setIsLoggedIn(!!token);
-
-        if (token) {
-            fetchUsername();
-        } else {
-            setUsername("");
-        }
     }, [location]);
-
-    const fetchUsername = async () => {
-        try {
-            const response = await GetCurrentUser();
-            if (response.success) {
-                setUsername(response.data.name);
-            } else {
-                setUsername("");
-            }
-        } catch (error) {
-            console.error("Error fetching user:", error);
-            setUsername("");
-        }
-    };
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -70,12 +50,12 @@ const Navbar = () => {
                     >
                         {/* Profile Picture */}
                         <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-lg font-bold uppercase text-white">
-                            {username ? username.charAt(0) : "G"}
+                            {user?.name ? user.name.charAt(0) : "G"}
                         </div>
 
                         {/* Username beside the picture */}
                         <span className="text-base font-medium hidden md:inline">
-                            {username}
+                            {user?.name}
                         </span>
                     </Link>
                 )}

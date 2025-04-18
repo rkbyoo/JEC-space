@@ -15,18 +15,17 @@ function Login() {
             dispatch(SetLoader(true))
             const response = await LoginUser(values)
             dispatch(SetLoader(false))
-            console.log(response)
+            console.log("this is my response from backend on login",response)
             if (response.success) {
                 localStorage.setItem("token", response.token)
                 message.success(response.message)
                 navigate("/")
-            } else {
-                message.error(response.message || "Login failed")
-            }
+            } 
+            
         } catch (error) {
             dispatch(SetLoader(false))
             console.log("Some error while login", error)
-            message.error("Login failed. Please try again.")
+            message.error(error.response?.data?.message)
         }
     }
 

@@ -19,13 +19,11 @@ function Signup() {
             if (response.success) {
                 message.success(response.message);
                 navigate("/login")
-            } else {
-                message.error(response.message || "Signup failed");
             }
     
         } catch (error) {
             dispatch(SetLoader(false))
-            message.error(error.response.message || error.message);
+            message.error(error.response?.data?.message);
         }
     };
     
