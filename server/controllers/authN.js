@@ -163,10 +163,9 @@ exports.getAllUser=async(req,res)=>{
 //update user status (admin can change the user status to inactive ofc)
  exports.updateUserStatus=async(req,res)=>{
     //get the info of the user
-    
     //check if the user exists or not
     //update the user info in database
-    //return response
+    //return response   
  }
 
 

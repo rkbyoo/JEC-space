@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { Section } from '../components/ui/Section';
 import { Button } from '../components/ui/Button';
 import { TeamMember } from '../components/ui/TeamMember';
-import { ArrowRight, Globe, Star, Rocket, Users, Award, Target, ShoppingCart, BarChart, Shield } from 'lucide-react';
-import jecImage from '../components/images/jec-image.jpg';
-import apImage from '../components/images/apImage.jpg';
-import rkbImage from '../components/images/rkbImage.png';
-import csImage from '../components/images/csImage.png';
+import { ArrowRight, Star, Target, ShoppingCart, BarChart, Shield } from 'lucide-react';
+import jecImage from '../assets/images/jec-image.jpg';
+import apImage from '../assets/images/apImage.jpg';
+import rkbImage from '../assets/images/rkbImage.png';
+import csImage from '../assets/images/csImage.png';
 
 const About = () => {
   const heroRef = useRef(null);
@@ -42,7 +42,7 @@ const About = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-gray-900"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight animate-fade-in">
-            About <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">JEC-Space</span>
+            Welcome to <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">JEC-Space</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8 animate-fade-in-delay">
             The perfect place for Jecians to find everything related to their curriculum and their time at JEC, since 2025.
@@ -145,14 +145,14 @@ const About = () => {
       <Section className="bg-black">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-block rounded-full bg-blue-900/20 px-3 py-1 text-sm text-blue-400 mb-2">Our Team</div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Meet the innovators behind JEC-Space</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Meet the contributors of JEC-Space</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {[
-            { name: 'Abhishek Prasad', role: 'Co-Founder and CEO', imgUrl: apImage },
-            { name: 'Rakib Hussain', role: 'Co-Founder and CTO', imgUrl: rkbImage },
-            { name: 'Chinmoy Sharma', role: 'Co-Founder and CMO', imgUrl: csImage }
+            { name: 'Abhishek Prasad', role: 'contributor', imgUrl: apImage },
+            { name: 'Rakib Hussain', role: 'contributor', imgUrl: rkbImage },
+            { name: 'Chinmoy Sharma', role: 'contributor', imgUrl: csImage }
           ].map((member, idx) => (
             <TeamMember key={idx} {...member} />
           ))}
