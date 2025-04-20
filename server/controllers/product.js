@@ -11,11 +11,12 @@ exports.addProduct=async(req,res)=>{
     try {
         //get the data from body
         const newProduct=new Product(req.body)
+
         //save the data in Product database
         await newProduct.save()
          //send notification to admin for approval of this new product ,it can be included in notification contoller as well but for now let it be here
          return res.status(200).json({
-            success:false,
+            success:true,
             message:"The product is successfully added",
             product:newProduct
          })

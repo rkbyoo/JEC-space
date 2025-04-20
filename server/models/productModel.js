@@ -43,21 +43,20 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    // images: {
-    //     type: Array,
-    //     default: [],
-    //     required: true
-    // },
-    // seller: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "User",
-    //     required: true
-    // },
-    // status: {
-    //     type: String,
-    //     default: "Pending",
-    //     required: true
-    // }
+    images: {
+        type: Array,
+        default: []
+    },
+    seller: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
+    status: {
+        type: String,
+        default: "Pending",
+        required: true
+    }
 },
     { timestamps:true}
 )

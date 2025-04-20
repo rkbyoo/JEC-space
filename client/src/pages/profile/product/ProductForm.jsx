@@ -41,6 +41,7 @@ function ProductForm({ showProductForm, setShowProductForm }) {
       dispatch(SetLoader(true))
       const response=await AddProduct(values)
       dispatch(SetLoader(false))
+      console.log(response)
       if(response.success){
         message.success(response.message)
         setShowProductForm(false)
