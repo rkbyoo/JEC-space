@@ -1,12 +1,36 @@
 //import the models 
+const User=require("../models/userModel")
+const Product=require("../models/productModel")
 
 //import the util function of cloudinary 
 
-
+const {imageUploader}=require("../utils/imageUploader")
 
 //add a new product
-
-   //send notification to admin for approval of this new product ,it can be included in notification contoller as well but for now let it be here
+exports.addProduct=async(req,res)=>{
+    try {
+        //get the data from body
+        const newProduct=new Product(req.body)
+        //save the data in Product database
+        await newProduct.save()
+         //send notification to admin for approval of this new product ,it can be included in notification contoller as well but for now let it be here
+         return res.status(200).json({
+            success:false,
+            message:"The product is successfully added"
+         })
+    
+    //
+        
+    } catch (error) {
+        console.log("internal error in adding product",error)
+        res.status(500).json({
+            success:false,
+            message:"internal server error"
+        })
+    }
+    
+}
+  
 
 
 //get all product details 
