@@ -4,8 +4,8 @@ import Products from './product/Products'
 
 function Profile() {
   return (
-    <div className='bg-white h-full w-full p-10 text-black rounded-xl'>
-      <Tabs defaultActiveKey="1"tabPosition="left" >
+    <div className='bg-white  p-10 text-black rounded-xl'>
+      <Tabs defaultActiveKey="1"tabPosition="left" className='w-full h-full'>
             <Tabs.TabPane tab="Profile" key="1">
                 <h1>general</h1>
             </Tabs.TabPane>
