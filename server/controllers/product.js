@@ -16,7 +16,8 @@ exports.addProduct=async(req,res)=>{
          //send notification to admin for approval of this new product ,it can be included in notification contoller as well but for now let it be here
          return res.status(200).json({
             success:false,
-            message:"The product is successfully added"
+            message:"The product is successfully added",
+            product:newProduct
          })
     
     //
@@ -34,11 +35,34 @@ exports.addProduct=async(req,res)=>{
 
 
 //get all product details 
-    
-    //filter by category
+exports.getProduct=async(req,res)=>{
+    try {
+        const products=await Product.find()
+        if(!products){
+            return res.status(404).json({
+                success:false,
+                message:"no products available"
+            })
+        }
+        return res.status(200).json({
+            success:true,
+            message:"All the Products are fetched successfully",
+            data:products
+        })
+         //filter by category
 
 
     //filter by age of the product 
+    } catch (error) {
+        console.error("some error while getting product",error)
+        return res.status(500).json({
+            success:false,
+            message:"internal server error in getting the products"
+        })
+    }
+}
+    
+   
 
 
 //get a product by id 
