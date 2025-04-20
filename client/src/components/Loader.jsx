@@ -2,7 +2,7 @@ import React from 'react'
 import { ColorRing } from 'react-loader-spinner'
 function Loader() {
   return (
-    <div className='fixed inset-0 bg-black z-10 flex justify-center items-center opacity-60'>
+    <div className='fixed inset-0 bg-black z-[9999] flex justify-center items-center opacity-60'>
       <ColorRing
         visible={true}
         height="80"

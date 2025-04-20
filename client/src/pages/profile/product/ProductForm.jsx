@@ -1,5 +1,8 @@
-import { Form, Modal, Tabs, Input, Row, Col } from 'antd';
+import { Form, Modal, Tabs, Input, Row, Col, message } from 'antd';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AddProduct } from '../../../apicalls/products';
+import { SetLoader } from '../../../redux/loadersSlice'
 
 const rules = [
   {
@@ -28,9 +31,25 @@ const additionalThings = [
 ];
 
 function ProductForm({ showProductForm, setShowProductForm }) {
+  const dispatch=useDispatch()
   const formRef = React.useRef(null);
-  const onFinish=(values)=>{
-    console.log(values)
+  const {user}=useSelector(state=>state.users)
+  const onFinish=async(values)=>{
+    try {
+      values.seller=user._id
+      values.status="pending"
+      dispatch(SetLoader(true))
+      const response=await AddProduct(values)
+      dispatch(SetLoader(false))
+      if(response.success){
+        message.success(response.message)
+        setShowProductForm(false)
+      }
+    } catch (error) {
+      dispatch(SetLoader(false))
+      console.log("some error in adding product",error)
+      message.error(error.message.data)
+    }
   }
   return (
     <div className="text-black font-sans">

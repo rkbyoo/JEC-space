@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
   },
 });
 
-// ✅ Add interceptor to inject token dynamically
+// Add interceptor to inject token dynamically
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');

@@ -35,7 +35,7 @@ exports.addProduct=async(req,res)=>{
 
 
 //get all product details 
-exports.getProduct=async(req,res)=>{
+exports.getAllProduct=async(req,res)=>{
     try {
         const products=await Product.find()
         if(!products){

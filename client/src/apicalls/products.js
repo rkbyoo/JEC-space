@@ -1,10 +1,10 @@
-import { axiosInstance } from "./axiosInstance";
+import axiosInstance  from "./axiosInstance";
 
 // add a new product
 export const AddProduct = async (payload) => {
   try {
     const response = await axiosInstance.post(
-      "/api/products/add-product",
+      "/products/add-product",
       payload
     );
     return response.data;
@@ -14,11 +14,10 @@ export const AddProduct = async (payload) => {
 };
 
 // get all products
-export const GetProducts = async (filters) => {
+export const GetProducts = async () => {
   try {
-    const response = await axiosInstance.post(
-      "/api/products/get-products",
-      filters
+    const response = await axiosInstance.get(
+      "/products/get-all-product",
     );
     return response.data;
   } catch (error) {
@@ -30,7 +29,7 @@ export const GetProducts = async (filters) => {
 export const EditProduct = async (id, payload) => {
   try {
     const response = await axiosInstance.put(
-      `/api/products/edit-product/${id}`,
+      `/products/edit-product/${id}`,
       payload
     );
     return response.data;

@@ -11,7 +11,7 @@ const { connectCloudinary } = require("./config/cloudinary");
 
 //import necessary routes
 const userRoute = require("./routes/userRoute");
-// const productRoute=require("./routes/productRoute")
+const productRoute=require("./routes/productRoute")
 // const offerRoute=require("./routes/offerRoute")
 // const notificationRoute=require("./routes/notificationRoute")
 
@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(cookieParser());
 //routes middleware (mounting)
 app.use("/api/users", userRoute);
-// app.use("/api/product",productRoute)
+app.use("/api/products",productRoute)
 // app.use("/api/offer",offerRoute)
 // app.use("/api/notification",notificationRoute)
 
