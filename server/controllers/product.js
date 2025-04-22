@@ -38,7 +38,7 @@ exports.addProduct=async(req,res)=>{
 //get all product details 
 exports.getAllProduct=async(req,res)=>{
     try {
-        const products=await Product.find()
+        const products=await Product.find().sort({createdAt:-1});
         if(!products){
             return res.status(404).json({
                 success:false,
@@ -70,10 +70,38 @@ exports.getAllProduct=async(req,res)=>{
 
 
 //edit a product 
-
+exports.editProduct=async(req,res)=>{
+    try {
+        await Product.findByIdAndUpdate(req.params.id,req.body);
+        return res.status(200).json({
+            success:true,
+            message:"The product updated successfully"
+         })
+    
+    } catch (error) {
+        res.send({
+            success: false,
+            message: error.message
+        })
+    };
+}
 
 //delete a product 
-
+exports.deleteProduct=async(req,res)=>{
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        return res.status(200).json({
+            success:true,
+            message:"The product deleted successfully"
+         })
+    
+    } catch (error) {
+        res.send({
+            success: false,
+            message: error.message
+        })
+    };
+}
 
 //get image from pc 
   

@@ -1,7 +1,7 @@
-import { Form, Modal, Tabs, Input, Row, Col, message } from 'antd';
-import React from 'react';
+import { Form, Modal, Tabs, Input, Select,Row, Col, message,Checkbox } from 'antd';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AddProduct } from '../../../apicalls/products';
+import { AddProduct, EditProduct, DeleteProduct } from '../../../apicalls/products';
 import { SetLoader } from '../../../redux/loadersSlice'
 
 const rules = [
@@ -30,35 +30,80 @@ const additionalThings = [
   },
 ];
 
-function ProductForm({ showProductForm, setShowProductForm }) {
+function ProductForm({ showProductForm, setShowProductForm, selectedProduct, setSelectedProduct,deleteProduct, setDeleteProduct, getData}) {
   const dispatch=useDispatch()
   const formRef = React.useRef(null);
   const {user}=useSelector(state=>state.users)
+  useEffect(()=>{
+    if(selectedProduct)
+    {
+      formRef.current.setFieldsValue(selectedProduct);
+    }
+  },[selectedProduct]);
   const onFinish=async(values)=>{
     try {
-      values.seller=user._id
-      values.status="pending"
       dispatch(SetLoader(true))
-      const response=await AddProduct(values)
+      let response=null;
+      if(selectedProduct)
+      {
+        response=await EditProduct(selectedProduct._id,values)
+      }
+      else if(deleteProduct)
+      {
+        response=await DeleteProduct(deleteProduct._id);
+      }
+      else
+      {
+        values.seller=user._id
+        values.status="pending"
+        response=await AddProduct(values)
+      }
       dispatch(SetLoader(false))
       console.log(response)
       if(response.success){
         message.success(response.message)
+        getData();
         setShowProductForm(false)
+        setSelectedProduct(null)
+        setDeleteProduct(null)
       }
     } catch (error) {
       dispatch(SetLoader(false))
       console.log("some error in adding product",error)
       message.error(error.message.data)
+      setShowProductForm(false)
+      setSelectedProduct(null)
+      setDeleteProduct(null)
     }
   }
+  //check for deletion of products
+  if(deleteProduct)
+  {
+    return <div className="text-black font-sans">
+        <Modal
+          title={<span className="text-lg font-semibold">Confirm Delete?</span>}
+          open={deleteProduct}
+          onCancel={()=>{
+            setShowProductForm(false);
+            setDeleteProduct(null);
+          }}
+          centered
+          okText="Confirm"
+          onOk={onFinish}
+        >
+
+        </Modal>
+    </div>
+  }
+  //check for add a product OR edit a product
   return (
     <div className="text-black font-sans">
       <Modal
-        title={<span className="text-lg font-semibold">Upload Your Product Item</span>}
+        title={selectedProduct?<span className="text-lg font-semibold">Edit Product Item</span>:<span className="text-lg font-semibold">Upload Your Product Item</span>}
         open={showProductForm}
         onCancel={() => {
           setShowProductForm(false);
+          setSelectedProduct(null);
         }}
         centered
         okText="Save"
@@ -72,10 +117,11 @@ function ProductForm({ showProductForm, setShowProductForm }) {
           <Tabs.TabPane tab="General" key="1">
             <Form layout="vertical" ref={formRef} onFinish={onFinish}>
               <Form.Item label="Name" name="name" rules={rules}>
-                <input type="text" placeholder="Enter product name" className='w-full border h-[2.5rem]' />
+                <Input placeholder="Enter product name" />
               </Form.Item>
+
               <Form.Item label="Description" name="description" rules={rules}>
-                <textarea className='w-full border' type="text" />
+                <Input.TextArea rows={4} placeholder="Enter description" />
               </Form.Item>
 
               <Row gutter={[16, 16]}>
@@ -87,14 +133,13 @@ function ProductForm({ showProductForm, setShowProductForm }) {
 
                 <Col span={8}>
                   <Form.Item label="Category" name="category" rules={rules}>
-                    <select className="w-full h-[38px] border rounded px-2">
-                      <option value="">Select</option>
-                      <option value="electronics">Electronics</option>
-                      <option value="fashion">Fashion</option>
-                      <option value="home">Home</option>
-                      <option value="sports">Sports</option>
-                    </select>
-                  </Form.Item>
+                  <Select placeholder="Select category">
+                    <Select.Option value="electronics">Electronics</Select.Option>
+                    <Select.Option value="fashion">Fashion</Select.Option>
+                    <Select.Option value="home">Home</Select.Option>
+                    <Select.Option value="sports">Sports</Select.Option>
+                  </Select>
+                </Form.Item>
                 </Col>
 
                 <Col span={8}>
@@ -105,27 +150,17 @@ function ProductForm({ showProductForm, setShowProductForm }) {
               </Row>
 
               {/* Checkbox Part */}
-              <div className="flex gap-10">
-                {additionalThings.map((item) => {
-                  return (
-                    <Form.Item
-                      label={item.label}
-                      name={item.name}
-                      valuePropName="checked"
-                    >
-                      <Input
-                        type="checkbox"
-                        value={item.name}
-                        onChange={(e) => {
-                          formRef.current.setFieldsValue({
-                            [item.name]: e.target.checked,
-                          });
-                        }}
-                        checked={formRef.current?.getFieldValue(item.name)}
-                      />
-                    </Form.Item>
-                  );
-                })}
+              <div className="flex gap-10 flex-wrap">
+                {additionalThings.map((item) => (
+                  <Form.Item
+                    key={item.name}
+                    name={item.name}
+                    valuePropName="checked"
+                    className="m-0"
+                  >
+                    <Checkbox>{item.label}</Checkbox>
+                  </Form.Item>
+                ))}
               </div>
             </Form>
           </Tabs.TabPane>

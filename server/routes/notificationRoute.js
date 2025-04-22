@@ -9,7 +9,7 @@ const {addNotification,getNotification,deleteNotification,readNotification}=requ
 
 //add a notification with route /notify 
 
-router.post("/notify",addNotification);
+router.post("/notify",authZ,addNotification);
 
 //get all notification with route /get-all-notification
 

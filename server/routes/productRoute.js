@@ -2,7 +2,7 @@
 const express=require("express")
 const router=express.Router()
 //import controllers 
-const {addProduct,getAllProduct}=require("../controllers/product")
+const {addProduct,getAllProduct,editProduct,deleteProduct}=require("../controllers/product")
 const {authZ}=require("../middlewares/authZ")
 
 //add new product with route /add-product 
@@ -13,9 +13,11 @@ router.get("/get-all-product",authZ,getAllProduct)
 //get a product by id with route /get-product/:id
 
 //edit a product by id with route /edit-product/:id
-
+router.put("/edit-product/:id",authZ,editProduct)
 
 //delete a product by id with route /delete-product/:id
+router.delete("/delete-product/:id",authZ,deleteProduct)
+
 
 //upload the product image with route /upload-image
 
