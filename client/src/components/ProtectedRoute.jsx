@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 //in protected route we are going to wrap the children component so that only authorized one can access those pages 
 
-function ProtectedRoute({ children }) {
+function ProtectedRoute({ children }) { 
     const [user, setuser] = useState(null) //it is the data recieved from the backend
     const navigate = useNavigate()
 

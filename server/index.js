@@ -13,7 +13,7 @@ const { connectCloudinary } = require("./config/cloudinary");
 const userRoute = require("./routes/userRoute");
 // const productRoute=require("./routes/productRoute")
 // const offerRoute=require("./routes/offerRoute")
-// const notificationRoute=require("./routes/notificationRoute")
+const notificationRoute=require("./routes/notificationRoute")
 
 require("dotenv").config();
 const PORT = process.env.PORT || 5000;
@@ -36,7 +36,7 @@ app.use(cookieParser());
 app.use("/api/users", userRoute);
 // app.use("/api/product",productRoute)
 // app.use("/api/offer",offerRoute)
-// app.use("/api/notification",notificationRoute)
+app.use("/api/notification",notificationRoute)
 
 //idk
 
