@@ -9,9 +9,14 @@ import { useSelector } from 'react-redux'
 
 //in protected route we are going to wrap the children component so that only authorized one can access those pages 
 
+<<<<<<< HEAD
 function ProtectedRoute({ children }) {
     const {user}=useSelector((state)=>state.users)
     const dispatch = useDispatch()
+=======
+function ProtectedRoute({ children }) { 
+    const [user, setuser] = useState(null) //it is the data recieved from the backend
+>>>>>>> chin/notification
     const navigate = useNavigate()
     //validate function will make a api request using getcurrentuser instance and tell us that if the token is present or not and on the basis of that the user will be logged in
     const validateToken = async () => {
