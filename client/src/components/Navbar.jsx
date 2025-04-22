@@ -28,11 +28,12 @@ const Navbar = () => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
     if (token) {
-      fetchUsername();
+      //fetchUsername();
       getUserNotifications();
-  } else {
-      setUsername("");
-  }
+    }
+  // } else {
+  //     setUsername("");
+  // }
   }, [location]);
 
   const getUserNotifications=async()=>{
@@ -46,19 +47,19 @@ const Navbar = () => {
       console.error("Error fetching notifications :", error);
   }
 }
-const fetchUsername = async () => {
-try {
-  const response = await GetCurrentUser();
-  if (response.success) {
-      setUsername(response.data.name);
-  } else {
-      setUsername("");
-  }
-} catch (error) {
-  console.error("Error fetching user:", error);
-  setUsername("");
-}
-};
+// const fetchUsername = async () => {
+// try {
+//   const response = await GetCurrentUser();
+//   if (response.success) {
+//       setUsername(response.data.name);
+//   } else {
+//       setUsername("");
+//   }
+// } catch (error) {
+//   console.error("Error fetching user:", error);
+//   setUsername("");
+// }
+// };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
