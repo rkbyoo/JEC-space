@@ -1,4 +1,4 @@
-import { Form, Modal, Tabs, Input, Select,Row, Col, message,Checkbox } from 'antd';
+import { Form, Modal, Tabs, Input, Select, Row, Col, message, Checkbox } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddProduct, EditProduct, DeleteProduct } from '../../../apicalls/products';
@@ -30,37 +30,33 @@ const additionalThings = [
   },
 ];
 
-function ProductForm({ showProductForm, setShowProductForm, selectedProduct, setSelectedProduct,deleteProduct, setDeleteProduct, getData}) {
-  const dispatch=useDispatch()
+function ProductForm({ showProductForm, setShowProductForm, selectedProduct, setSelectedProduct, deleteProduct, setDeleteProduct, getData }) {
+  const dispatch = useDispatch()
   const formRef = React.useRef(null);
-  const {user}=useSelector(state=>state.users)
-  useEffect(()=>{
-    if(selectedProduct)
-    {
+  const { user } = useSelector(state => state.users)
+  useEffect(() => {
+    if (selectedProduct) {
       formRef.current.setFieldsValue(selectedProduct);
     }
-  },[selectedProduct]);
-  const onFinish=async(values)=>{
+  }, [selectedProduct]);
+  const onFinish = async (values) => {
     try {
       dispatch(SetLoader(true))
-      let response=null;
-      if(selectedProduct)
-      {
-        response=await EditProduct(selectedProduct._id,values)
+      let response = null;
+      if (selectedProduct) {
+        response = await EditProduct(selectedProduct._id, values)
       }
-      else if(deleteProduct)
-      {
-        response=await DeleteProduct(deleteProduct._id);
+      else if (deleteProduct) {
+        response = await DeleteProduct(deleteProduct._id);
       }
-      else
-      {
-        values.seller=user._id
-        values.status="pending"
-        response=await AddProduct(values)
+      else {
+        values.seller = user._id
+        values.status = "pending"
+        response = await AddProduct(values)
       }
       dispatch(SetLoader(false))
       console.log(response)
-      if(response.success){
+      if (response.success) {
         message.success(response.message)
         getData();
         setShowProductForm(false)
@@ -69,7 +65,7 @@ function ProductForm({ showProductForm, setShowProductForm, selectedProduct, set
       }
     } catch (error) {
       dispatch(SetLoader(false))
-      console.log("some error in adding product",error)
+      console.log("some error in adding product", error)
       message.error(error.message.data)
       setShowProductForm(false)
       setSelectedProduct(null)
@@ -77,29 +73,28 @@ function ProductForm({ showProductForm, setShowProductForm, selectedProduct, set
     }
   }
   //check for deletion of products
-  if(deleteProduct)
-  {
+  if (deleteProduct) {
     return <div className="text-black font-sans">
-        <Modal
-          title={<span className="text-lg font-semibold">Confirm Delete?</span>}
-          open={deleteProduct}
-          onCancel={()=>{
-            setShowProductForm(false);
-            setDeleteProduct(null);
-          }}
-          centered
-          okText="Confirm"
-          onOk={onFinish}
-        >
+      <Modal
+        title={<span className="text-lg font-semibold">Confirm Delete?</span>}
+        open={deleteProduct}
+        onCancel={() => {
+          setShowProductForm(false);
+          setDeleteProduct(null);
+        }}
+        centered
+        okText="Confirm"
+        onOk={onFinish}
+      >
 
-        </Modal>
+      </Modal>
     </div>
   }
   //check for add a product OR edit a product
   return (
     <div className="text-black font-sans">
       <Modal
-        title={selectedProduct?<span className="text-lg font-semibold">Edit Product Item</span>:<span className="text-lg font-semibold">Upload Your Product Item</span>}
+        title={selectedProduct ? <span className="text-lg font-semibold">Edit Product Item</span> : <span className="text-lg font-semibold">Upload Your Product Item</span>}
         open={showProductForm}
         onCancel={() => {
           setShowProductForm(false);
@@ -133,13 +128,13 @@ function ProductForm({ showProductForm, setShowProductForm, selectedProduct, set
 
                 <Col span={8}>
                   <Form.Item label="Category" name="category" rules={rules}>
-                  <Select placeholder="Select category">
-                    <Select.Option value="electronics">Electronics</Select.Option>
-                    <Select.Option value="fashion">Fashion</Select.Option>
-                    <Select.Option value="home">Home</Select.Option>
-                    <Select.Option value="sports">Sports</Select.Option>
-                  </Select>
-                </Form.Item>
+                    <Select placeholder="Select category">
+                      <Select.Option value="electronics">Electronics</Select.Option>
+                      <Select.Option value="fashion">Fashion</Select.Option>
+                      <Select.Option value="home">Home</Select.Option>
+                      <Select.Option value="sports">Sports</Select.Option>
+                    </Select>
+                  </Form.Item>
                 </Col>
 
                 <Col span={8}>

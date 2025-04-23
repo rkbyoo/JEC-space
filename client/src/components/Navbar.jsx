@@ -16,13 +16,13 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-// const Navbar = () => {
-//     const [isLoggedIn, setIsLoggedIn] = useState(false);
-//     const [username, setUsername] = useState("");
-//     const navigate = useNavigate();
-//     const location = useLocation();
-    const [notifications = [],setNotifications]=useState([]);
-    const [showNotifications,setShowNotifications]=useState(false);
+  // const Navbar = () => {
+  //     const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //     const [username, setUsername] = useState("");
+  //     const navigate = useNavigate();
+  //     const location = useLocation();
+  const [notifications = [], setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -31,35 +31,35 @@ const Navbar = () => {
       //fetchUsername();
       getUserNotifications();
     }
-  // } else {
-  //     setUsername("");
-  // }
+    // } else {
+    //     setUsername("");
+    // }
   }, [location]);
 
-  const getUserNotifications=async()=>{
+  const getUserNotifications = async () => {
     try {
       const response = await getNotification();
       if (response.success) {
-          setNotifications(response.data);
+        setNotifications(response.data);
       }
 
-  } catch (error) {
+    } catch (error) {
       console.error("Error fetching notifications :", error);
+    }
   }
-}
-// const fetchUsername = async () => {
-// try {
-//   const response = await GetCurrentUser();
-//   if (response.success) {
-//       setUsername(response.data.name);
-//   } else {
-//       setUsername("");
-//   }
-// } catch (error) {
-//   console.error("Error fetching user:", error);
-//   setUsername("");
-// }
-// };
+  // const fetchUsername = async () => {
+  // try {
+  //   const response = await GetCurrentUser();
+  //   if (response.success) {
+  //       setUsername(response.data.name);
+  //   } else {
+  //       setUsername("");
+  //   }
+  // } catch (error) {
+  //   console.error("Error fetching user:", error);
+  //   setUsername("");
+  // }
+  // };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -79,7 +79,7 @@ const Navbar = () => {
         }
 
     }, [location]); */}
-    {/* const getUserNotifications=async()=>{
+        {/* const getUserNotifications=async()=>{
               try {
                 const response = await getNotification();
                 if (response.success) {
@@ -133,12 +133,12 @@ const Navbar = () => {
       {/* Desktop Sidebar */}
       <div className="hidden md:flex h-screen w-20 md:w-60 bg-gray-900 text-white flex-col justify-between p-10 fixed">
         {/* Top nav items */}
-        <div className="space-y-8 mt-6">    
+        <div className="space-y-8 mt-6">
 
-    {/* return (
+          {/* return (
       <div className="h-screen w-20 md:w-60 bg-gray-900 text-white flex flex-col justify-between p-10 fixed">
         {/* Top nav items */}
-        {/*<div className="space-y-8 mt-6"> */}
+          {/*<div className="space-y-8 mt-6"> */}
 
           {/* <Badge count={1} className="w-12 h-12">
                     
@@ -202,7 +202,7 @@ const Navbar = () => {
         <div className="space-y-3">
           {isLoggedIn && (
             <Link
-              to="/profile"
+              to={user?.role === "admin" ? "/admin" : "/profile"}
               className="flex items-center space-x-3 hover:bg-gray-800 p-2 rounded transition"
             >
               {/* Profile Picture */}
