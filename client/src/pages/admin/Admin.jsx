@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tabs } from 'antd'
 import Products from './Products'
+import Users from './Users'
 
 
 const Admin = () => {
@@ -11,7 +12,7 @@ const Admin = () => {
                     <Products />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Users" key="2">
-                    <h1>Users</h1>
+                    <Users />
                 </Tabs.TabPane>
             </Tabs>
         </div>
