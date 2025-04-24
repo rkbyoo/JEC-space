@@ -17,7 +17,7 @@ const Admin = () => {
     }, []);
 
     return (
-        <div>
+        <div className='bg-white  p-10 text-black rounded-xl'>
             <Tabs className="text-white">
                 <Tabs.TabPane tab="Products" key="1">
                     <Products />
