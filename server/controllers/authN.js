@@ -75,7 +75,12 @@ exports.login = async (req, res) => {
       });
     }
     //if user is active or not(posssibility is that admin has blocked the user)
-
+    if (user.status !== "active") {
+      return res.status(403).json({
+        success: false,
+        message: "The user's account is blocked. Please contact admin.",
+      });
+    }
     //compare the passwords
 
     if (!(await bcrypt.compare(password, user.password))) {
