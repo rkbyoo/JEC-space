@@ -1,8 +1,11 @@
 import { Form, Modal, Tabs, Input, Select, Row, Col, message, Checkbox } from 'antd';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AddProduct, EditProduct, DeleteProduct } from '../../../apicalls/products';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector} from 'react-redux';
+import { AddProduct, EditProduct, DeleteProduct, UpdateProductImage } from '../../../apicalls/products';
 import { SetLoader } from '../../../redux/loadersSlice'
+import { Steps } from 'antd';
+import Images from './Images';
+import { DeleteOutlined } from '@ant-design/icons';
 
 const rules = [
   {
@@ -34,11 +37,34 @@ function ProductForm({ showProductForm, setShowProductForm, selectedProduct, set
   const dispatch = useDispatch()
   const formRef = React.useRef(null);
   const { user } = useSelector(state => state.users)
+  const [currentStep, setCurrentStep] = useState(0);
+  const [addedProduct,setAddedProduct] = useState(null);
+  const [images,setImages] = useState(addedProduct?.images || selectedProduct?.images);
   useEffect(() => {
     if (selectedProduct) {
       formRef.current.setFieldsValue(selectedProduct);
     }
   }, [selectedProduct]);
+  const updateImage = async (id) => {
+    const newImages = images.filter((image,index)=> id!==index)
+      try {
+        dispatch(SetLoader(true));
+        console.log(selectedProduct._id)
+        const response = await UpdateProductImage(selectedProduct._id,{images:newImages})
+        dispatch(SetLoader(false));
+        console.log(response)
+        if(response.success)
+        {
+          setImages(newImages);
+          getData();
+          console.log("hello");
+        }
+        
+      } catch (error) {
+        dispatch(SetLoader(false));
+        message.error(error.message);
+      }
+  }
   const onFinish = async (values) => {
     try {
       dispatch(SetLoader(true))
@@ -53,16 +79,21 @@ function ProductForm({ showProductForm, setShowProductForm, selectedProduct, set
         values.seller = user._id
         values.status = "pending"
         response = await AddProduct(values)
+        setAddedProduct(response.product);
       }
       dispatch(SetLoader(false))
       console.log(response)
       if (response.success) {
         message.success(response.message)
         getData();
-        setShowProductForm(false)
-        setSelectedProduct(null)
+        if(currentStep === 1 || deleteProduct)
+        {
+          setSelectedProduct(null)
+          setShowProductForm(false)
+        }
         setDeleteProduct(null)
       }
+      setCurrentStep(1);
     } catch (error) {
       dispatch(SetLoader(false))
       console.log("some error in adding product", error)
@@ -93,81 +124,156 @@ function ProductForm({ showProductForm, setShowProductForm, selectedProduct, set
   //check for add a product OR edit a product
   return (
     <div className="text-black font-sans">
-      <Modal
-        title={selectedProduct ? <span className="text-lg font-semibold">Edit Product Item</span> : <span className="text-lg font-semibold">Upload Your Product Item</span>}
-        open={showProductForm}
-        onCancel={() => {
-          setShowProductForm(false);
-          setSelectedProduct(null);
-        }}
-        centered
-        okText="Save"
-        onOk={() => {
-          formRef.current.submit();
-        }}
-        width={800}
-      >
-        <Tabs defaultActiveKey="1" className="mt-2">
-          {/* General Tab */}
-          <Tabs.TabPane tab="General" key="1">
-            <Form layout="vertical" ref={formRef} onFinish={onFinish}>
-              <Form.Item label="Name" name="name" rules={rules}>
-                <Input placeholder="Enter product name" />
+    <Modal
+      title={
+        <span className="text-lg font-semibold">
+          {selectedProduct ? "Edit Product Item" : "Upload Your Product Item"}
+        </span>
+      }
+      open={showProductForm}
+      onCancel={() => {
+        setShowProductForm(false);
+        setSelectedProduct(null);
+        setCurrentStep(0);
+      }}
+      centered
+      okText="Save"
+      onOk={() => {
+        if (currentStep === 0) {
+          formRef.current.submit(); // will trigger onFinish
+        } 
+      }}
+      width={800}
+      {...(currentStep === 1 && {footer:false})}  // okText and Cancel buttons are not available for images in this component(instead they are made available on <Images/> component)
+    >
+      {!selectedProduct && <div className='w-[80%] mx-auto mb-6 mt-6'>
+        <Steps current={currentStep} items={[
+          {
+            title: 'General Info',
+          },
+          {
+            title: 'Upload Images',
+          }
+        ]} />
+      </div>}
+
+      {selectedProduct && <div className='w-[80%] mx-auto mb-6 mt-6'>
+        <Steps current={currentStep} items={[
+          {
+            title: 'General Info',
+          },
+          {
+            title: 'Edit Images',
+          }
+        ]} />
+      </div>}
+      
+
+      {currentStep === 0 && (
+        <Form layout="vertical" ref={formRef} onFinish={onFinish}>
+          {/* General Info Form goes here */}
+          <Form.Item label="Name" name="name" rules={rules}>
+            <Input placeholder="Enter product name" />
+          </Form.Item>
+
+          <Form.Item label="Description" name="description" rules={rules}>
+            <Input.TextArea rows={4} placeholder="Enter description" />
+          </Form.Item>
+
+          <Row gutter={[16, 16]}>
+            <Col span={8}>
+              <Form.Item label="Price" name="price" rules={rules}>
+                <Input type="number" placeholder="₹ Price" />
               </Form.Item>
-
-              <Form.Item label="Description" name="description" rules={rules}>
-                <Input.TextArea rows={4} placeholder="Enter description" />
+            </Col>
+            <Col span={8}>
+              <Form.Item label="Category" name="category" rules={rules}>
+                <Select placeholder="Select category">
+                  <Select.Option value="electronics">Electronics</Select.Option>
+                  <Select.Option value="fashion">Fashion</Select.Option>
+                  <Select.Option value="home">Home</Select.Option>
+                  <Select.Option value="sports">Sports</Select.Option>
+                </Select>
               </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label="Age" name="age" rules={rules}>
+                <Input type="number" placeholder="In months" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-              <Row gutter={[16, 16]}>
-                <Col span={8}>
-                  <Form.Item label="Price" name="price" rules={rules}>
-                    <Input type="number" placeholder="₹ Price" />
-                  </Form.Item>
-                </Col>
+          <div className="flex gap-10 flex-wrap">
+            {additionalThings.map((item) => (
+              <Form.Item
+                key={item.name}
+                name={item.name}
+                valuePropName="checked"
+                className="m-0"
+              >
+                <Checkbox>{item.label}</Checkbox>
+              </Form.Item>
+            ))}
+          </div>
+        </Form>
+      )}
 
-                <Col span={8}>
-                  <Form.Item label="Category" name="category" rules={rules}>
-                    <Select placeholder="Select category">
-                      <Select.Option value="electronics">Electronics</Select.Option>
-                      <Select.Option value="fashion">Fashion</Select.Option>
-                      <Select.Option value="home">Home</Select.Option>
-                      <Select.Option value="sports">Sports</Select.Option>
-                    </Select>
-                  </Form.Item>
-                </Col>
+      {currentStep === 1 && !selectedProduct && (
+        <div>
+        <div className="flex gap-2 flex-wrap mb-6">
+          {images?.map((image, index) => (
+            <img key={index} src={image} alt="img" className="w-[100px] h-[100px]" />
+          ))}
+        </div>
+      
+        <Images
+          selectedProduct={selectedProduct}
+          getData={getData}
+          setShowProductForm={setShowProductForm}
+          addedProduct={addedProduct}
+          setAddedProduct={setAddedProduct}
+          setImages={setImages}
+          setSelectedProduct={setSelectedProduct}
+        />
+      </div>
+      
+        
+      )}
 
-                <Col span={8}>
-                  <Form.Item label="Age" name="age" rules={rules}>
-                    <Input type="number" placeholder="In months" />
-                  </Form.Item>
-                </Col>
-              </Row>
+      {currentStep === 1 && selectedProduct && (
+        <div>
+        <div className="flex gap-2 flex-wrap mb-8">
+          {images?.map((image, index) => (
+            <div key={index} className='w-[100px] h-[100px]'>
+                <img src={image} alt="img" className="w-[100%] h-[100%]"/>
+                <div className="flex items-center gap-2 cursor-pointer hover:text-red-600"
+                      onClick={() => updateImage(index)}
+                >
+                  <DeleteOutlined />
+                  <span>Delete</span>
+                </div>
 
-              {/* Checkbox Part */}
-              <div className="flex gap-10 flex-wrap">
-                {additionalThings.map((item) => (
-                  <Form.Item
-                    key={item.name}
-                    name={item.name}
-                    valuePropName="checked"
-                    className="m-0"
-                  >
-                    <Checkbox>{item.label}</Checkbox>
-                  </Form.Item>
-                ))}
-              </div>
-            </Form>
-          </Tabs.TabPane>
+                
+            </div>  
+          ))}
+        </div>
 
-          {/* Images Tab */}
-          <Tabs.TabPane tab="Images" key="2">
-            <div className="text-gray-500 text-center p-6 border border-dashed rounded-md">
-              Image upload section coming soon...
-            </div>
-          </Tabs.TabPane>
-        </Tabs>
-      </Modal>
+      
+        <Images
+          selectedProduct={selectedProduct}
+          getData={getData}
+          setShowProductForm={setShowProductForm}
+          addedProduct={addedProduct}
+          setAddedProduct={setAddedProduct}
+          setImages={setImages}
+          setSelectedProduct={setSelectedProduct}
+        />
+      </div>
+      
+        
+      )}
+    </Modal>
+
     </div>
   );
 }

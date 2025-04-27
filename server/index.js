@@ -42,7 +42,7 @@ app.use("/api/notification",notificationRoute)
 
 //database connection
 connectDb();
-connectCloudinary();
+//connectCloudinary();
 
 app.listen(PORT, () => {
   console.log(`The server is running at Port ${PORT}`);

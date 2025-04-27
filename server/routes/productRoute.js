@@ -1,5 +1,7 @@
+const multer = require('multer');
 const express = require("express");
 const router = express.Router();
+
 //import controllers
 const {
   addProduct,
@@ -7,6 +9,8 @@ const {
   editProduct,
   deleteProduct,
   changeProductStatus,
+  uploadImage,
+  updateImage
 } = require("../controllers/product");
 const { authZ } = require("../middlewares/authZ");
 
@@ -23,9 +27,35 @@ router.put("/edit-product/:id", authZ, editProduct);
 //delete a product by id with route /delete-product/:id
 router.delete("/delete-product/:id", authZ, deleteProduct);
 
-//upload the product image with route /upload-image
-
 //update the product status by id with route /update-product-status/:id
 router.put("/update-product-status/:id", authZ, changeProductStatus);
+
+
+//get image from pc
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, 'uploads/'); // Make sure this folder exists in your project root
+  },
+  filename: function (req, file, callback) {
+    callback(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
+
+//upload the product image with route /upload-image
+router.post(
+  "/upload-image",
+  authZ,
+  multer({ storage: storage }).array("files", 10), // "files" matches frontend field name
+  uploadImage
+);
+
+//Update the product image with route /update-image
+router.put(
+  "/update-image/:id",
+  authZ,
+  updateImage
+)
 
 module.exports = router;

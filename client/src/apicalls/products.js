@@ -57,3 +57,29 @@ export const UpdateProductStatus = async (id, status) => {
     return error.message;
   }
 };
+
+//Upload Product Image
+export const UploadProductImage = async(payload)=>{
+  try {
+    const response = await axiosInstance.post("/products/upload-image",payload,{
+      headers: {
+        "Content-Type": "multipart/form-data", 
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+}
+
+//update Product Image
+export const UpdateProductImage = async(id,payload)=>{
+  try{
+    const response = await axiosInstance.put(`/products/update-image/${id}`,payload);
+    return response.data;
+  }
+  catch(error)
+  {
+    return error.message;
+  }
+}
