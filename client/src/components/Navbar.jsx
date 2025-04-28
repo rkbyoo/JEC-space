@@ -71,39 +71,7 @@ const Navbar = () => {
     <>
       {/* Mobile Bottom Navbar */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 text-white flex justify-around items-center py-3 px-2 z-10">
-        {/* if (token) {
-            fetchUsername();
-            getUserNotifications();
-        } else {
-            setUsername("");
-        }
-
-    }, [location]); */}
-        {/* const getUserNotifications=async()=>{
-              try {
-                const response = await getNotification();
-                if (response.success) {
-                    setNotifications(response.data);
-                }
-      
-            } catch (error) {
-                console.error("Error fetching notifications :", error);
-            }
-          }
-    const fetchUsername = async () => {
-        try {
-            const response = await GetCurrentUser();
-            if (response.success) {
-                setUsername(response.data.name);
-            } else {
-                setUsername("");
-            }
-        } catch (error) {
-            console.error("Error fetching user:", error);
-            setUsername("");
-        }
-    }; */}
-
+        
         <Link to="/" className="flex flex-col items-center justify-center">
           <AiFillHome size={24} className="hover:text-blue-400 transition" />
           <span className="text-xs mt-1">Home</span>

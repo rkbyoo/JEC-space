@@ -91,6 +91,32 @@ exports.getUserProduct = async (req, res) => {
   }
 };
 
+//get a single product by id
+exports.getSingleProduct = async (req, res) => {
+  console.log("id is : ", req.params.id);
+  try {
+    const product = await Product.findById(req.params.id).populate("seller");
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "product not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Product found",
+      data: product,
+    });
+    console.log(product);
+  } catch (error) {
+    console.error("some error while getting product", error);
+    return res.status(500).json({
+      success: false,
+      message: "internal server error in getting the products",
+    });
+  }
+};
+
 //edit a product
 exports.editProduct = async (req, res) => {
   try {

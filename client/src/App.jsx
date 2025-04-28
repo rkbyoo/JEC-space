@@ -11,6 +11,7 @@ import Profile from "./pages/profile/Profile";
 import Loader from "./components/Loader";
 import { useSelector } from "react-redux";
 import Admin from "./pages/admin/Admin"
+import ProductInfo from "./pages/ProductInfo.jsx";
 
 function App() {
   const { loading } = useSelector(state => state.loaders)
@@ -28,6 +29,7 @@ function App() {
             <Route path='/contact' element={<Contact />} />
             <Route path='/profile' element={<ProtectedRoute> <Profile /> </ProtectedRoute>} />
             <Route path='/admin' element={<ProtectedRoute> <Admin /> </ProtectedRoute>} />
+            <Route path='/product/:id' element={<ProtectedRoute> <ProductInfo /> </ProtectedRoute>} />
             <Route path='*' element={<Notfoundpage />} />
           </Routes>
         </div>

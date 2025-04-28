@@ -12,16 +12,21 @@ const {
   uploadImage,
   updateImage,
   getUserProduct,
+  getSingleProduct,
 } = require("../controllers/product");
 const { authZ } = require("../middlewares/authZ");
 
 //add new product with route /add-product
 router.post("/add-product", authZ, addProduct);
+
 //get all product with route /get-products (category and age based)
 router.get("/get-all-product", authZ, getAllProduct);
 
-//get a product by id with route /get-user-product/:id
+//get user products by id with route /get-user-product/:id
 router.get("/get-user-product/:id", authZ, getUserProduct);
+
+//get a single product by id with route /get-single-product/:id
+router.get("/get-single-product/:id", authZ, getSingleProduct);
 
 //edit a product by id with route /edit-product/:id
 router.put("/edit-product/:id", authZ, editProduct);
