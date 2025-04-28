@@ -1,8 +1,8 @@
 //import the models
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
-const fs=require("fs");
-const path=require("path");
+const fs = require("fs");
+const path = require("path");
 
 //import the util function of cloudinary
 
@@ -64,10 +64,12 @@ exports.getAllProduct = async (req, res) => {
 };
 
 //get Product details for single user
-exports.getUserProduct = async (req,res) => {
+exports.getUserProduct = async (req, res) => {
   console.log("id is : ", req.params.id);
   try {
-    const products = await Product.find({"seller":req.params.id}).populate("seller").sort({createdAt:-1});
+    const products = await Product.find({ seller: req.params.id })
+      .populate("seller")
+      .sort({ createdAt: -1 });
     if (!products) {
       return res.status(404).json({
         success: false,
@@ -75,10 +77,10 @@ exports.getUserProduct = async (req,res) => {
       });
     }
     res.status(200).json({
-      success:true,
-      message:"User products fetched successfully",
-      data:products
-    })
+      success: true,
+      message: "User products fetched successfully",
+      data: products,
+    });
     console.log(products);
   } catch (error) {
     console.error("some error while getting product", error);
@@ -87,10 +89,10 @@ exports.getUserProduct = async (req,res) => {
       message: "internal server error in getting the products",
     });
   }
-}
+};
 
 //get a single product by id
-exports.getSingleProduct = async (req,res) => {
+exports.getSingleProduct = async (req, res) => {
   console.log("id is : ", req.params.id);
   try {
     const product = await Product.findById(req.params.id).populate("seller");
@@ -101,10 +103,10 @@ exports.getSingleProduct = async (req,res) => {
       });
     }
     res.status(200).json({
-      success:true,
-      message:"Product found",
-      data:product
-    })
+      success: true,
+      message: "Product found",
+      data: product,
+    });
     console.log(product);
   } catch (error) {
     console.error("some error while getting product", error);
@@ -113,7 +115,7 @@ exports.getSingleProduct = async (req,res) => {
       message: "internal server error in getting the products",
     });
   }
-}
+};
 
 //edit a product
 exports.editProduct = async (req, res) => {
@@ -160,24 +162,23 @@ exports.uploadImage = async (req, res) => {
         folder: "JEC-Space",
       });
       imageUrls.push(result.secure_url);
-      
+
       // delete the file from local storage after upload
       fs.unlinkSync(file.path);
     }
     console.log(`imageurls : ${imageUrls}`);
-    
+
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
       { $push: { images: { $each: imageUrls } } },
       { new: true } // this returns the updated document
     );
-    
+
     res.send({
       success: true,
       message: "Images uploaded successfully",
       updatedProduct, // now this will include the updated image URLs
     });
-    
   } catch (error) {
     res.status(500).send({
       success: false,
@@ -188,7 +189,7 @@ exports.uploadImage = async (req, res) => {
 
 //update image in selected product
 exports.updateImage = async (req, res) => {
-  const {images} = req.body;
+  const { images } = req.body;
   try {
     await Product.findByIdAndUpdate(req.params.id, { images });
     return res.status(200).json({
@@ -202,9 +203,6 @@ exports.updateImage = async (req, res) => {
     });
   }
 };
-
-
-
 
 //using util module for uploading the image to cloudinary and make sure to update the database by updating the image array inside product model/schema
 
