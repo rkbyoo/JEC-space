@@ -30,6 +30,16 @@ export const GetUserProduct = async (id) => {
   }
 }
 
+// get a product by id
+export const GetSingleProduct = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/products/get-single-product/${id}`);
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+}
+
 // edit a product
 export const EditProduct = async (id, payload) => {
   try {
