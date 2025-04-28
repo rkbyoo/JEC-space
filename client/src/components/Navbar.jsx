@@ -131,7 +131,7 @@ const Navbar = () => {
       </div>
 
       {/* Desktop Navbar */}
-      <div className="hidden md:flex w-full h-16 bg-gray-900 text-white flex-row justify-between items-center p-4 fixed top-0 left-0 right-0 z-50">
+      <div className="hidden md:flex w-full h-16 bg-gray-900 text-white flex-row justify-between items-center p-12 fixed top-0 left-0 right-0 z-50">
         {/* Left nav items */}
         <div className="flex space-x-6 items-center">
           <Link

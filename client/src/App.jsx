@@ -18,7 +18,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Navbar />
-        <div className="pt-16 px-6"> {/* Add padding top to match the top navbar */}
+        <div className="pt-24 px-6"> {/* Add padding top to match the top navbar */}
           {loading && <Loader></Loader>}
           <Routes>
             <Route path='/' element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
