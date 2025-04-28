@@ -1,12 +1,13 @@
 import { Button, message, Table } from 'antd'
 import React, { useEffect, useState } from 'react'
 import ProductForm from './ProductForm';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SetLoader } from '../../../redux/loadersSlice';
-import { GetProducts } from '../../../apicalls/products';
+import { GetProducts, GetUserProduct } from '../../../apicalls/products';
 import moment from "moment"
 
 function Products() {
+    const { user } = useSelector((state) => state.users);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [deleteProduct, setDeleteProduct] = useState(null);
     const [showProductForm, setShowProductForm] = useState(false);
@@ -15,7 +16,7 @@ function Products() {
     const getData = async () => {
         try {
             dispatch(SetLoader(true))
-            const response = await GetProducts()
+            const response = await GetUserProduct(user._id);
             dispatch(SetLoader(false))
             if (response.success) {
                 console.log("the response i got from get-product api call", response)

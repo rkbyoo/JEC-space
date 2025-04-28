@@ -10,7 +10,8 @@ const {
   deleteProduct,
   changeProductStatus,
   uploadImage,
-  updateImage
+  updateImage,
+  getUserProduct
 } = require("../controllers/product");
 const { authZ } = require("../middlewares/authZ");
 
@@ -19,7 +20,8 @@ router.post("/add-product", authZ, addProduct);
 //get all product with route /get-products (category and age based)
 router.get("/get-all-product", authZ, getAllProduct);
 
-//get a product by id with route /get-product/:id
+//get a product by id with route /get-user-product/:id
+router.get("/get-user-product/:id",authZ,getUserProduct);
 
 //edit a product by id with route /edit-product/:id
 router.put("/edit-product/:id", authZ, editProduct);

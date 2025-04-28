@@ -20,6 +20,16 @@ export const GetProducts = async () => {
   }
 };
 
+// get User specific products
+export const GetUserProduct = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/products/get-user-product/${id}`);
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+}
+
 // edit a product
 export const EditProduct = async (id, payload) => {
   try {
