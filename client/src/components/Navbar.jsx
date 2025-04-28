@@ -130,21 +130,35 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Desktop Sidebar */}
-      <div className="hidden md:flex h-screen w-20 md:w-60 bg-gray-900 text-white flex-col justify-between p-10 fixed">
-        {/* Top nav items */}
-        <div className="space-y-8 mt-6">
+      {/* Desktop Navbar */}
+      <div className="hidden md:flex w-full h-16 bg-gray-900 text-white flex-row justify-between items-center p-4 fixed top-0 left-0 right-0 z-50">
+        {/* Left nav items */}
+        <div className="flex space-x-6 items-center">
+          <Link
+            to="/"
+            className="flex items-center space-x-3 hover:text-blue-400 transition"
+          >
+            <AiFillHome size={24} />
+            <span className="hidden md:inline">Home</span>
+          </Link>
 
-          {/* return (
-      <div className="h-screen w-20 md:w-60 bg-gray-900 text-white flex flex-col justify-between p-10 fixed">
-        {/* Top nav items */}
-          {/*<div className="space-y-8 mt-6"> */}
+          <Link
+            to="/about"
+            className="flex items-center space-x-3 hover:text-blue-400 transition"
+          >
+            <AiOutlineInfoCircle size={24} />
+            <span className="hidden md:inline">About</span>
+          </Link>
 
-          {/* <Badge count={1} className="w-12 h-12">
-                    
-                    <Avatar shape="circle"  size={64} icon={<IoNotificationsCircleSharp size={96} color="white"/>}/>
-                    
-                </Badge> */}
+          <Link
+            to="/contact"
+            className="flex items-center space-x-3 hover:text-blue-400 transition"
+          >
+            <IoIosContact size={24} />
+            <span className="hidden md:inline">Contact</span>
+          </Link>
+
+
           <div className="flex items-center space-x-3 ">
             <Badge
               count={
@@ -173,37 +187,14 @@ const Navbar = () => {
             refresh={getUserNotifications}
           />}
 
-          <Link
-            to="/"
-            className="flex items-center space-x-3 hover:text-blue-400 transition"
-          >
-            <AiFillHome size={24} />
-            <span className="hidden md:inline">Home</span>
-          </Link>
-
-          <Link
-            to="/about"
-            className="flex items-center space-x-3 hover:text-blue-400 transition"
-          >
-            <AiOutlineInfoCircle size={24} />
-            <span className="hidden md:inline">About</span>
-          </Link>
-
-          <Link
-            to="/contact"
-            className="flex items-center space-x-3 hover:text-blue-400 transition"
-          >
-            <IoIosContact size={24} />
-            <span className="hidden md:inline">Contact</span>
-          </Link>
         </div>
 
         {/* Bottom profile section */}
-        <div className="space-y-3">
+        <div className="flex items-center space-x-4">
           {isLoggedIn && (
             <Link
               to={user?.role === "admin" ? "/admin" : "/profile"}
-              className="flex items-center space-x-3 hover:bg-gray-800 p-2 rounded transition"
+              className="flex items-center space-x-2 hover:bg-gray-800 px-3 py-2 rounded transition"
             >
               {/* Profile Picture */}
               <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-lg font-bold uppercase text-white">
@@ -220,7 +211,7 @@ const Navbar = () => {
           {/* Logout/Login button */}
           <button
             onClick={handleLogout}
-            className="w-full mt-4 py-1 bg-blue-500 hover:bg-blue-600 rounded text-sm transition hidden md:block"
+            className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded transition"
           >
             {isLoggedIn ? "Logout" : "Login"}
           </button>
