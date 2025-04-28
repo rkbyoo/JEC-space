@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 exports.signUp = async (req, res) => {
   try {
     //fetch data
-    const { name, email, password, role, timestamps, status, profilePicture } =
+    const { name, email, password, role, timestamps, status} =
       req.body;
 
     console.log("Incoming signup data:", req.body);
@@ -37,7 +37,7 @@ exports.signUp = async (req, res) => {
       role,
       timestamps,
       status,
-      profilePicture,
+      profilePicture:`https://api.dicebear.com/5.x/initials/svg?seed=${name}`,
     });
 
     //send res
