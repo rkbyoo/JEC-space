@@ -121,15 +121,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { GetSingleProduct } from '../apicalls/products';
-import { message } from 'antd';
+import { Divider, message, Button } from 'antd';
 import { SetLoader } from '../redux/loadersSlice';
 import { useParams } from 'react-router-dom';
 import { ShoppingBag, Package, Receipt, Shield, Wrench } from 'lucide-react';
+import BidModal from './BidModal';
+
 
 function ProductInfo() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [showAddNewBid,setShowAddNewBid] = useState(false);
   const dispatch = useDispatch();
 
   const getData = async () => {
@@ -152,6 +155,14 @@ function ProductInfo() {
     <div className="min-h-[calc(100vh-96px)] bg-gray-900">
       <div className="">
         <div className="bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-700">
+          {showAddNewBid && 
+          <BidModal
+            product={product}
+            reloadData={getData}
+            showBidModal={showAddNewBid}
+            setShowBidModal={setShowAddNewBid}
+          />
+          }
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
             {/* Images Section */}
             <div className="space-y-6">
@@ -270,6 +281,17 @@ function ProductInfo() {
                     </span>
                   </div>
                 </div>
+              </div>
+
+              <Divider/>
+
+              <div className="flex flex-col">
+                  <div className="flex justify-between">
+                    <h1 className="text-xl font-semibold text-white ml-2">Bids</h1>
+                    <Button onClick={()=> setShowAddNewBid(!showAddNewBid)}>
+                      New Bid
+                    </Button>
+                  </div>
               </div>
             </div>
           </div>

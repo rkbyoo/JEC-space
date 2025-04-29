@@ -37,7 +37,7 @@ exports.addProduct = async (req, res) => {
 //get all product details
 exports.getAllProduct = async (req, res) => {
   try {
-    const products = await Product.find()
+    const products = await Product.find({ status: "approved" })
       .populate("seller")
       .sort({ createdAt: -1 });
     if (!products) {
