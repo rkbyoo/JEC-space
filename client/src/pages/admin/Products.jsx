@@ -2,7 +2,7 @@ import { Button, message, Table } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { SetLoader } from '../../redux/loadersSlice';
-import { GetProducts, UpdateProductStatus } from '../../apicalls/products';
+import { GetAllProducts, UpdateProductStatus } from '../../apicalls/products';
 import moment from "moment"
 
 function Products() {
@@ -11,7 +11,7 @@ function Products() {
     const getData = async () => {
         try {
             dispatch(SetLoader(true))
-            const response = await GetProducts(null)
+            const response = await GetAllProducts(null)
             dispatch(SetLoader(false))
             if (response.success) {
                 console.log("the response i got from get-product api call", response)
