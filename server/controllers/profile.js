@@ -1,5 +1,8 @@
 //importing models
 const User=require("../models/userModel")
+const Product=require("../models/productModel")
+const Notification=require("../models/notificationModel")
+const Offer=require("../models/offerModel")
 const {uploadToCloudinary}=require("../utils/imageUploader")
 
 exports.updateProfilePicture=async(req,res)=>{
@@ -70,3 +73,34 @@ exports.updateProfilePicture=async(req,res)=>{
     }
     
   }
+
+exports.deleteAccount=async(req,res)=>{
+  try {
+    //get the data from req
+    const userId=req.body.userId
+    //check the userid to be present in different databases and then delete them one by one
+    if(!userId){
+      return res.status(404).json({
+        success:false,
+        message:"fetching userId failed"
+      })
+    }
+    await Product.findOneAndDelete({seller:userId})
+    await Notification.findOneAndDelete({user:userId})
+    // await Offer.findOneAndDelete({seller:userId})
+
+    //delete the entry from user database
+    await User.findByIdAndDelete(userId)
+    //return res
+    return res.status(200).json({
+      success:true,
+      message:"The account is deleted successfully"
+    })
+  } catch (error) {
+    console.error("some error while deleting acc",error)
+    return res.status(500).json({
+      success:false,
+      message:"internal server error in deleting acc"
+    })
+  }
+}

@@ -32,6 +32,25 @@ export const UpdateName=async(payload)=>{
 
 }
 
+export const ChangePassword=async(payload)=>{
+    try {
+        const response=await axiosInstance.put("/profile/updatePassword",payload)
+        return response.data
+    } catch (error) {
+        console.error("some error in changing password",error)
+        return error.message
+    }
+}
+export const DeleteAccount=async(payload)=>{
+    try {
+        const response=await axiosInstance.put("/profile/deleteAccount",payload)
+        return response.data
+    } catch (error) {
+        console.error("some error in changing password",error)
+        return error.message
+    }
+}
+
 
 
 
