@@ -34,8 +34,8 @@ function Images({selectedProduct, getData, setShowProductForm, addedProduct, set
             {
                 message.success(response.message);
                 if (response.updatedProduct) {
-                    setImages(response.updatedProduct.images); // ✅ correct way
-                    setAddedProduct(response.updatedProduct);  // ✅ update locally too
+                    setImages(response.updatedProduct.images); 
+                    setAddedProduct(response.updatedProduct);  
                 }
                 getData();
                 setFileList([]);
