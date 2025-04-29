@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-// const fileupload=require("express-fileupload")
+const fileupload=require("express-fileupload")
 //import database connection functions
 
 const { connectDb } = require("./config/connectDb");
@@ -14,15 +14,16 @@ const userRoute = require("./routes/userRoute");
 const productRoute=require("./routes/productRoute")
 // const offerRoute=require("./routes/offerRoute")
 const notificationRoute=require("./routes/notificationRoute")
+const profileRoute=require("./routes/profileRoute")
 
 require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 
-//middlewares
-// app.use(fileupload({
-//     useTempFiles:true,
-//     tempFileDir:"/tmp"
-// }))
+// middlewares
+app.use(fileupload({
+    useTempFiles:true,
+    tempFileDir:"/tmp"
+}))
 
 app.use(
   cors({
@@ -32,17 +33,19 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+
 //routes middleware (mounting)
 app.use("/api/users", userRoute);
 app.use("/api/products",productRoute)
 // app.use("/api/offer",offerRoute)
 app.use("/api/notification",notificationRoute)
+app.use("/api/profile",profileRoute)
 
 //idk
 
 //database connection
 connectDb();
-//connectCloudinary();
+// connectCloudinary();
 
 app.listen(PORT, () => {
   console.log(`The server is running at Port ${PORT}`);

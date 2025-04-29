@@ -24,7 +24,7 @@ exports.updateProfilePicture=async(req,res)=>{
       //upload the image to cloudinary 
       const uploadResponse=await uploadToCloudinary(newProfilePhoto,"profilePhotos",100,100)
       //get the secure url and update the user database profile attribute
-      const updatedProfilePhoto=User.findByIdAndUpdate({_id:userId},{profilePicture:uploadResponse.secure_url},{new:true})
+      const updatedProfilePhoto=await User.findByIdAndUpdate({_id:userId},{profilePicture:uploadResponse.secure_url},{new:true})
       //return res with new image
       res.status(200).json({
         success:true,
@@ -53,7 +53,7 @@ exports.updateProfilePicture=async(req,res)=>{
         })
     }
     //update the database of user 
-    const updatedProfileInfo=await User.findByIdAndUpdate({userId},{name:userName},{new:true})
+    const updatedProfileInfo=await User.findByIdAndUpdate(userId,{name:userName},{new:true})
     //return the res with new name
     return res.status(200).json({
         success:true,

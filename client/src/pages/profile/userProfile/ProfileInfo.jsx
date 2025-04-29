@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Modal, Upload, Button, message } from 'antd'
 import { EditOutlined, UploadOutlined } from '@ant-design/icons'
+import { UpdateName, UpdateProfilePicture } from '../../../apicalls/profile'
 
 function ProfileInfo() {
     const { user } = useSelector((state) => state.users)
@@ -13,7 +14,22 @@ function ProfileInfo() {
 
     const handleEdit = () => setEditing(true)
     const handleChange = (e) => setName(e.target.value)
-    const handleSave = () => setEditing(false)
+
+    // Update name using API
+    const handleSave = async () => {
+        try {
+            const res = await UpdateName({ userName: name, userId: user._id });
+            if (res.success) {
+                message.success("Name updated successfully");
+                setEditing(false);
+                // Optionally, refresh user info here
+            } else {
+                message.error(res.message || "Failed to update name");
+            }
+        } catch (err) {
+            message.error("Error updating name");
+        }
+    }
 
     // Handle file selection
     const handleFileChange = (info) => {
@@ -24,7 +40,7 @@ function ProfileInfo() {
         }
     }
 
-    // Simulate API call to backend for image upload
+    // Update profile picture using API
     const handleChangeImage = async () => {
         if (!file) {
             message.warning('Please select an image to upload.')
@@ -32,20 +48,22 @@ function ProfileInfo() {
         }
         setUploading(true)
         try {
-            // Replace this with your actual API call
-            const formData = new FormData()
-            formData.append('profilePicture', file)
-            // await api.uploadProfilePicture(formData)
-            setTimeout(() => {
-                setUploading(false)
-                setModalOpen(false)
-                message.success('Profile picture updated!')
+            const formData = new FormData();
+            formData.append("newProfilePhoto", file);
+            formData.append("userId", user._id);
+            const res = await UpdateProfilePicture(formData);
+            if (res.success) {
+                message.success("Profile picture updated!");
+                setModalOpen(false);
+                setFile(null);
                 // Optionally, refresh user info here
-            }, 1200)
+            } else {
+                message.error(res.message || "Failed to update profile picture");
+            }
         } catch (err) {
-            setUploading(false)
-            message.error('Failed to update profile picture.')
+            message.error("Error updating profile picture");
         }
+        setUploading(false)
     }
 
     return (
@@ -65,14 +83,14 @@ function ProfileInfo() {
                                 <span className="text-4xl text-gray-500">?</span>
                             </div>
                         )}
-                        {/* Edit icon inside profile picture */}
+                        {/* edit icon inside profile picture */}
                         <button
-                            className="absolute bottom-3 right-3 rounded-full p-1 shadow  hover:bg-blue-100 transition"
+                            className="absolute bottom-2 right-2 bg-gradient-to-tr from-blue-500 to-blue-400 border-2 border-white rounded-full p-2 shadow-lg hover:scale-110 hover:from-blue-600 hover:to-blue-400 transition-all duration-200 flex items-center justify-center"
                             onClick={() => setModalOpen(true)}
                             title="Edit Profile Picture"
                             style={{ zIndex: 12 }}
                         >
-                            <EditOutlined className="text-blue-500 text-lg" />
+                            <EditOutlined className="text-white text-lg" />
                         </button>
                     </div>
                     <h2 className="text-2xl font-bold mt-4">Profile Information</h2>

@@ -6,7 +6,7 @@ const {updateName,updateProfilePicture}=require("../controllers/profile")
 const {authZ}=require("../middlewares/authZ")
 
 
-router.put("/updateProfilePhoto",authZ,updateProfilePicture)
+router.put("/updateProfilePicture",authZ,updateProfilePicture)
 router.put("/updateName",authZ,updateName)
 
 module.exports=router
