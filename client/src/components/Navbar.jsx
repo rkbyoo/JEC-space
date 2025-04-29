@@ -16,11 +16,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // const Navbar = () => {
-  //     const [isLoggedIn, setIsLoggedIn] = useState(false);
-  //     const [username, setUsername] = useState("");
-  //     const navigate = useNavigate();
-  //     const location = useLocation();
+ 
   const [notifications = [], setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -28,12 +24,9 @@ const Navbar = () => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
     if (token) {
-      //fetchUsername();
       getUserNotifications();
     }
-    // } else {
-    //     setUsername("");
-    // }
+   
   }, [location]);
 
   const getUserNotifications = async () => {
@@ -47,19 +40,6 @@ const Navbar = () => {
       console.error("Error fetching notifications :", error);
     }
   }
-  // const fetchUsername = async () => {
-  // try {
-  //   const response = await GetCurrentUser();
-  //   if (response.success) {
-  //       setUsername(response.data.name);
-  //   } else {
-  //       setUsername("");
-  //   }
-  // } catch (error) {
-  //   console.error("Error fetching user:", error);
-  //   setUsername("");
-  // }
-  // };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -165,9 +145,9 @@ const Navbar = () => {
               className="flex items-center space-x-2 hover:bg-gray-800 px-3 py-2 rounded transition"
             >
               {/* Profile Picture */}
-              <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-lg font-bold uppercase text-white">
-                {user?.name ? user.name.charAt(0) : "G"}
-              </div>
+              <img src={user?.profilePicture} className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-lg font-bold uppercase text-white">
+                
+              </img>
 
               {/* Username beside the picture */}
               <span className="text-base font-medium hidden md:inline">
