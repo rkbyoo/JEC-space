@@ -6,9 +6,10 @@ exports.updateProfilePicture=async(req,res)=>{
     try {
       //get the user id 
       const userId=req.body.userId
-      const {newProfilePhoto}=req.files
+      const newProfilePicture=req.files.newProfilePicture
+      console.log("the request is having",newProfilePicture,userId)
       //put the validations
-      if(!userId || !newProfilePhoto){
+      if(!userId || !newProfilePicture){
         return res.status(404).json({
           success:false,
           message:"error while fetching details"
@@ -22,9 +23,9 @@ exports.updateProfilePicture=async(req,res)=>{
         })
       } 
       //upload the image to cloudinary 
-      const uploadResponse=await uploadToCloudinary(newProfilePhoto,"profilePhotos",100,100)
+      const uploadResponse=await uploadToCloudinary(newProfilePicture,"profilePhotos",100,100)
       //get the secure url and update the user database profile attribute
-      const updatedProfilePhoto=await User.findByIdAndUpdate({_id:userId},{profilePicture:uploadResponse.secure_url},{new:true})
+      const updatedProfilePhoto=await User.findByIdAndUpdate(userId,{profilePicture:uploadResponse.secure_url},{new:true})
       //return res with new image
       res.status(200).json({
         success:true,

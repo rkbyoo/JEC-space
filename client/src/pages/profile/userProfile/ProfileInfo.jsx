@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Upload, Button, message } from 'antd'
 import { EditOutlined, UploadOutlined } from '@ant-design/icons'
 import { UpdateName, UpdateProfilePicture } from '../../../apicalls/profile'
+import { SetUser } from '../../../redux/usersSlice'
 
 function ProfileInfo() {
+    const dispatch = useDispatch();
     const { user } = useSelector((state) => state.users)
     const [editing, setEditing] = useState(false)
     const [name, setName] = useState(user.name)
@@ -22,7 +24,8 @@ function ProfileInfo() {
             if (res.success) {
                 message.success("Name updated successfully");
                 setEditing(false);
-                // Optionally, refresh user info here
+                // Update redux user state with new name
+                dispatch(SetUser(res.data));
             } else {
                 message.error(res.message || "Failed to update name");
             }
@@ -33,10 +36,10 @@ function ProfileInfo() {
 
     // Handle file selection
     const handleFileChange = (info) => {
-        if (info.file.status === 'removed') {
+        if (info.fileList.length === 0) {
             setFile(null)
-        } else if (info.file.status === 'done' || info.file.status === 'uploading' || info.file.originFileObj) {
-            setFile(info.file.originFileObj)
+        } else {
+            setFile(info.fileList[info.fileList.length - 1].originFileObj)
         }
     }
 
@@ -49,14 +52,15 @@ function ProfileInfo() {
         setUploading(true)
         try {
             const formData = new FormData();
-            formData.append("newProfilePhoto", file);
+            formData.append("newProfilePicture", file);
             formData.append("userId", user._id);
             const res = await UpdateProfilePicture(formData);
             if (res.success) {
                 message.success("Profile picture updated!");
                 setModalOpen(false);
                 setFile(null);
-                // Optionally, refresh user info here
+                // Update redux user state with new profile picture
+                dispatch(SetUser(res.data));
             } else {
                 message.error(res.message || "Failed to update profile picture");
             }
@@ -140,9 +144,15 @@ function ProfileInfo() {
             <Modal
                 title="Change Profile Picture"
                 open={modalOpen}
-                onCancel={() => setModalOpen(false)}
+                onCancel={() => {
+                    setModalOpen(false);
+                    setFile(null);
+                }}
                 footer={[
-                    <Button key="cancel" onClick={() => setModalOpen(false)}>
+                    <Button key="cancel" onClick={() => {
+                        setModalOpen(false);
+                        setFile(null);
+                    }}>
                         Cancel
                     </Button>,
                     <Button
@@ -162,6 +172,12 @@ function ProfileInfo() {
                     maxCount={1}
                     onChange={handleFileChange}
                     accept="image/*"
+                    fileList={file ? [{
+                        uid: '-1',
+                        name: file.name,
+                        status: 'done',
+                        url: URL.createObjectURL(file),
+                    }] : []}
                 >
                     <Button icon={<UploadOutlined />}>Select Image</Button>
                 </Upload>
