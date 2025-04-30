@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Upload, Button, message } from 'antd'
 import { EditOutlined, UploadOutlined } from '@ant-design/icons'
-import { UpdateName, UpdateProfilePicture } from '../../../apicalls/profile'
+import { UpdateName, UpdateProfilePicture, ChangePassword, DeleteAccount } from '../../../apicalls/profile'
 import { SetUser } from '../../../redux/usersSlice'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 function ProfileInfo() {
@@ -30,7 +29,7 @@ function ProfileInfo() {
     // Update name using API
     const handleSave = async () => {
         try {
-            const res = await UpdateName({ userName: name, userId: user._id });
+            const res = await UpdateName({ userName: name});
             if (res.success) {
                 message.success("Name updated successfully");
                 setEditing(false);
@@ -63,7 +62,6 @@ function ProfileInfo() {
         try {
             const formData = new FormData();
             formData.append("newProfilePicture", file);
-            formData.append("userId", user._id);
             const res = await UpdateProfilePicture(formData);
             if (res.success) {
                 message.success("Profile picture updated!");
@@ -85,12 +83,13 @@ function ProfileInfo() {
         setDeleting(true)
         try {
             const res = await DeleteAccount({
-                userId: user._id,
-                password: deletePassword
+                                confirmPassword: deletePassword
             })
             if (res.success) {
                 message.success("Account deleted successfully")
                 setDeleteModalOpen(false)
+                //this will remove the token and then navgate to login account
+                localStorage.removeItem("token")
                 navigate('/login')
             } else {
                 message.error(res.message || "Failed to delete account")
@@ -105,21 +104,21 @@ function ProfileInfo() {
     const handleChangePassword = async () => {
         setChangingPwd(true)
         try {
-            const res = await UpdatePassword({
-                userId: user._id,
-                oldPassword: oldPwd,
+            const res = await ChangePassword({
+                                currentPassword: oldPwd,
                 newPassword: newPwd
             })
+            console.log(res)
             if (res.success) {
                 message.success("Password changed successfully")
                 setChangePwdModalOpen(false)
                 setOldPwd("")
                 setNewPwd("")
             } else {
-                message.error(res.message || "Failed to change password")
+                message.error(res || "Failed to change password")
             }
-        } catch (err) {
-            message.error("Error changing password")
+        } catch (error) {
+            message.error(error.message)
         }
         setChangingPwd(false)
     }
