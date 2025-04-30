@@ -1,17 +1,22 @@
 //import controllers and router here
 const express = require("express");
+const fileupload=require("express-fileupload")
 const router = express.Router();
 
 const {updateName,updateProfilePicture}=require("../controllers/profile")
 const {authZ}=require("../middlewares/authZ")
 
+//middleware
+
+router.use(fileupload({
+    useTempFiles:true,
+    tempFileDir:"/tmp"
+}))
 
 router.put("/updateProfilePicture",authZ,updateProfilePicture)
 router.put("/updateName",authZ,updateName)
 
 module.exports=router
-
-
 
 
 

@@ -130,6 +130,12 @@ exports.changePassword = async (req, res) => {
         message:"some error while fetching the userId and other details"
       })
     }
+    if(currentPassword==newPassword){
+      return res.status(403).json({
+        success:false,
+        message:"choose a new password"
+      })
+    }
     const user=await User.findById(userId)
     //match the ps
     if(await bcrypt.compare(user.password,currentPassword)){

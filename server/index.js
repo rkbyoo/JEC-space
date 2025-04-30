@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-//const fileupload=require("express-fileupload")
 //import database connection functions
 
 const { connectDb } = require("./config/connectDb");
@@ -21,10 +20,7 @@ require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 
 // middlewares
-// app.use(fileupload({
-//     useTempFiles:true,
-//     tempFileDir:"/tmp"
-// }))
+
 
 app.use(
   cors({
