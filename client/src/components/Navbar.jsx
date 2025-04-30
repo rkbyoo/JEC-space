@@ -9,7 +9,7 @@ import { IoNotificationsCircleSharp } from "react-icons/io5";
 import { ClockCircleOutlined } from '@ant-design/icons';
 import { Avatar, Badge, Space } from 'antd';
 import Notifications from "./Notifications";
-import { getNotification } from "../apicalls/notification";
+import { getNotification, readNotification } from "../apicalls/notification";
 const Navbar = () => {
   const { user } = useSelector((state) => state.users);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,6 +38,14 @@ const Navbar = () => {
 
     } catch (error) {
       console.error("Error fetching notifications :", error);
+    }
+  }
+
+  const readnotifications = async () => {
+    try {
+      await readNotification();
+    } catch (error) {
+      message.error(error.message);
     }
   }
 
@@ -107,13 +115,13 @@ const Navbar = () => {
           </Link>
 
 
-          <div className="flex items-center space-x-3 ">
+          {/* <div className="flex items-center space-x-3 ">
             <Badge
               count={
                 notifications.filter((notification) => !notification.read).length
               }
 
-              onClick={() => setShowNotifications(true)}
+              onClick={() => {setShowNotifications(true);readnotifications()}}
 
               className="cursor-pointer"
             >
@@ -125,7 +133,32 @@ const Navbar = () => {
                 }
               />
             </Badge>
-          </div>
+          </div> */}
+
+<div className="flex items-center space-x-3">
+  <div
+    className="cursor-pointer"
+    onClick={() => {
+      setShowNotifications(true);
+      readnotifications();
+    }}
+  >
+    <Badge
+      count={
+        notifications.filter((notification) => !notification.read).length
+      }
+    >
+      <Avatar
+        shape="circle"
+        size={64}
+        icon={
+          <i className="ri-notification-2-line hover:text-blue-400 transition" />
+        }
+      />
+    </Badge>
+  </div>
+</div>
+
 
           {<Notifications
             notifications={notifications}

@@ -30,7 +30,7 @@ const getNotification=async (req,res)=>{
     try{
         const userNotifications = await Notification.find({
             user : req.body.userId
-        });
+        }).sort({createdAt:-1});
         res.send({
             success:true,
             data:userNotifications
