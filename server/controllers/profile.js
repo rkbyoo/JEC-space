@@ -78,8 +78,7 @@ exports.updateName = async (req, res) => {
 exports.deleteAccount = async (req, res) => {
   try {
     //get the data from req
-    const userId = req.body.userId
-    const { confirmPassword } = req.body
+    const { confirmPassword,userId} = req.body
     //check the userid to be present in different databases and then delete them one by one
     if (!userId || !confirmPassword) {
       return res.status(404).json({
@@ -88,7 +87,7 @@ exports.deleteAccount = async (req, res) => {
       })
     }
     const user = await User.findById(userId)
-    if (await bcrypt.compare(user.password, confirmPassword)) {
+    if (await bcrypt.compare(confirmPassword,user.password)) {
       await Product.findOneAndDelete({ seller: userId })
       await Notification.findOneAndDelete({ user: userId })
       // await Offer.findOneAndDelete({seller:userId})
@@ -100,13 +99,12 @@ exports.deleteAccount = async (req, res) => {
         message: "The account is deleted successfully"
       })
     }
-    return res.status(403).json({
-      success:false,
-      message:"The password is incorrect"
-    })
-
-
-
+    else{
+      return res.status(403).json({
+        success:false,
+        message:"The password is incorrect"
+      })
+    }
   } catch (error) {
     console.error("some error while deleting acc", error)
     return res.status(500).json({
@@ -123,6 +121,7 @@ exports.changePassword = async (req, res) => {
   try {
     //get the payload 
     const {currentPassword,newPassword,userId}=req.body
+    console.log(req.body)
     //check the user id and its validation
     if(!currentPassword || !newPassword || !userId){
       return res.status(404).json({
@@ -130,16 +129,28 @@ exports.changePassword = async (req, res) => {
         message:"some error while fetching the userId and other details"
       })
     }
+    if(currentPassword==newPassword){
+      return res.status(403).json({
+        success:false,
+        message:"choose a new password"
+      })
+    }
     const user=await User.findById(userId)
     //match the ps
-    if(await bcrypt.compare(user.password,currentPassword)){
+    if(await bcrypt.compare(currentPassword,user.password)){
        //hash and update the ps
-      const hashedPassword=bcrypt.hash(newPassword)
+      const hashedPassword=await bcrypt.hash(newPassword,10)
       await User.findByIdAndUpdate(userId,{password:hashedPassword})
       //return res
       return res.status(200).json({
         success:true,
         message:"the password is changed successfully"
+      })
+    }
+    else{
+      return res.status(403).json({
+        success:false,
+        message:"Password is incorrect"
       })
     }
    
