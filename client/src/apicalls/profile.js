@@ -41,6 +41,8 @@ export const ChangePassword=async(payload)=>{
         return error.message
     }
 }
+
+
 export const DeleteAccount=async(payload)=>{
     try {
         const response=await axiosInstance.put("/profile/deleteAccount",payload)
