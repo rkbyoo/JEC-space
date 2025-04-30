@@ -16,7 +16,7 @@ export const UpdateProfilePicture = async (payload) => {
       return response.data;
     } catch (error) {
       console.error("Some error occurred in API call of updateProfilePicture:", error);
-      return error.message;
+      return error.response.data.message
     }
   };
   
@@ -27,18 +27,18 @@ export const UpdateName=async(payload)=>{
         
     } catch (error) {
         console.error("some error occured in api call of updateName",error)
-        return error.message
+        return error.response.data.message
     }
 
 }
 
 export const ChangePassword=async(payload)=>{
     try {
-        const response=await axiosInstance.put("/profile/updatePassword",payload)
+        const response=await axiosInstance.put("/profile/changePassword",payload)
         return response.data
     } catch (error) {
         console.error("some error in changing password",error)
-        return error.message
+        return error.response.data.message
     }
 }
 
@@ -49,7 +49,7 @@ export const DeleteAccount=async(payload)=>{
         return response.data
     } catch (error) {
         console.error("some error in changing password",error)
-        return error.message
+        return error.response.data.message
     }
 }
 
