@@ -33,22 +33,26 @@ export const GetProducts = async () => {
 // get User specific products
 export const GetUserProduct = async (id) => {
   try {
-    const response = await axiosInstance.get(`/products/get-user-product/${id}`);
+    const response = await axiosInstance.get(
+      `/products/get-user-product/${id}`
+    );
     return response.data;
   } catch (error) {
     return error.message;
   }
-}
+};
 
 // get a product by id
 export const GetSingleProduct = async (id) => {
   try {
-    const response = await axiosInstance.get(`/products/get-single-product/${id}`);
+    const response = await axiosInstance.get(
+      `/products/get-single-product/${id}`
+    );
     return response.data;
   } catch (error) {
     return error.message;
   }
-}
+};
 
 // edit a product
 export const EditProduct = async (id, payload) => {
@@ -89,27 +93,32 @@ export const UpdateProductStatus = async (id, status) => {
 };
 
 //Upload Product Image
-export const UploadProductImage = async(payload)=>{
+export const UploadProductImage = async (payload) => {
   try {
-    const response = await axiosInstance.post("/products/upload-image",payload,{
-      headers: {
-        "Content-Type": "multipart/form-data", 
-      },
-    });
+    const response = await axiosInstance.post(
+      "/products/upload-image",
+      payload,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     return error.message;
   }
-}
+};
 
 //update Product Image
-export const UpdateProductImage = async(id,payload)=>{
-  try{
-    const response = await axiosInstance.put(`/products/update-image/${id}`,payload);
+export const UpdateProductImage = async (id, payload) => {
+  try {
+    const response = await axiosInstance.put(
+      `/products/update-image/${id}`,
+      payload
+    );
     return response.data;
-  }
-  catch(error)
-  {
+  } catch (error) {
     return error.message;
   }
-}
+};

@@ -21,7 +21,7 @@
    ```bash copy
    git clone https://github.com/perceptui/vite-react-tailwind-template.git
    cd vite-react-tailwind-template
-    ```
+   ```
 
 2. **Install dependencies:**
 
@@ -32,14 +32,15 @@ yarn install
 ```
 
 3. **Start the development server:**
+
 ```bash
 npm run dev
 # or use yarn
 yarn dev
 ```
 
-
 ## Contributing
+
 Feel free to contribute to this repository! Open an issue or submit a pull request for any improvements, bug fixes, or feature suggestions.
 
 > Start building your next amazing project with this powerful and efficient template today! 🎉
