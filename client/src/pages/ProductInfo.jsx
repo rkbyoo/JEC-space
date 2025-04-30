@@ -119,16 +119,18 @@
 // export default ProductInfo
 
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GetSingleProduct } from '../apicalls/products';
 import { Divider, message, Button } from 'antd';
 import { SetLoader } from '../redux/loadersSlice';
 import { useParams } from 'react-router-dom';
 import { ShoppingBag, Package, Receipt, Shield, Wrench } from 'lucide-react';
 import BidModal from './BidModal';
+import { getAllBids } from '../apicalls/bid';
 
 
 function ProductInfo() {
+  const {user} = useSelector((state) => state.users);
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -140,7 +142,14 @@ function ProductInfo() {
       dispatch(SetLoader(true));
       const singleProduct = await GetSingleProduct(id);
       dispatch(SetLoader(false));
-      setProduct(singleProduct.data);
+      if(singleProduct.success)
+      {
+        const bidsResponse = await getAllBids({product:id})
+        setProduct({
+          ...singleProduct.data,
+          bids: bidsResponse.data
+        })
+      }
     } catch (error) {
       dispatch(SetLoader(false));
       message.error(error.message);
@@ -152,7 +161,7 @@ function ProductInfo() {
   }, []);
 
   return (
-    <div className="min-h-[calc(100vh-96px)] bg-gray-900">
+    <div className="min-h-[calc(100vh-96px)] bg-gray-900 rounded-2xl">
       <div className="">
         <div className="bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-700">
           {showAddNewBid && 
@@ -287,9 +296,11 @@ function ProductInfo() {
 
               <div className="flex flex-col">
                   <div className="flex justify-between">
-                    <h1 className="text-xl font-semibold text-white ml-2">Bids</h1>
-                    <Button onClick={()=> setShowAddNewBid(!showAddNewBid)}>
-                      New Bid
+                    <h1 className="m-0 p-0 text-lg font-semibold text-white ml-2">Try making a counter offer?</h1>
+                    <Button onClick={()=> setShowAddNewBid(!showAddNewBid)}
+                      disabled = {user._id === product?.seller._id}
+                      >
+                      Make a Counter Offer
                     </Button>
                   </div>
               </div>

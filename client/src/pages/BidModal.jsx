@@ -1,16 +1,37 @@
-import { Form, Modal } from 'antd';
+import { Form, Modal, Input, message } from 'antd';
 import React, { useRef } from 'react'
-import {Input} from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { SetLoader } from '../redux/loadersSlice';
+import { placeBid } from '../apicalls/bid';
 
 function BidModal({ showBidModal, setShowBidModal, product, reloadData}) {
+    const {user} = useSelector((state) => state.users);
     const formref=useRef(null);
     const rules = [{required:true,message:"Required"}];
-
+    const dispatch = useDispatch();
     const onFinish = async(values)=>{
         try {
-            
+            dispatch(SetLoader(true));
+            const response = await placeBid({
+                ...values,
+                product:product._id,
+                seller:product.seller._id,
+                buyer:user._id
+            })
+            dispatch(SetLoader(false));
+            if(response.success)
+            {
+                message.success("Bid added successfully");
+                reloadData();
+                setShowBidModal(false)
+            }
+            else
+            {
+                throw new Error(response.message);
+            }
         } catch (error) {
-            
+            message.error(error.message);
+            dispatch(SetLoader(false));
         }
     }
   return (
@@ -27,7 +48,7 @@ function BidModal({ showBidModal, setShowBidModal, product, reloadData}) {
             </h1>
 
             <Form layout="vertical" ref={formref} onFinish={onFinish}>
-                <Form.Item label="Bid Amount" name="bidAmount"
+                <Form.Item label="Counter Offer Amount" name="bidAmount"
                     rules={rules}
                 >
                     <Input/>

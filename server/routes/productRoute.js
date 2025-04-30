@@ -57,7 +57,7 @@ const upload = multer({ storage: storage });
 router.post(
   "/upload-image",
   authZ,
-  multer({ storage: storage }).array("files", 10), // "files" matches frontend field name
+  upload.array("files", 10), // "files" matches frontend field name
   uploadImage
 );
 

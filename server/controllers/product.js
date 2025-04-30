@@ -181,6 +181,7 @@ exports.deleteProduct = async (req, res) => {
 //Upload images to cloudinary
 exports.uploadImage = async (req, res) => {
   try {
+    console.log("hello");
     const files = req.files; // array of files
     console.log(files);
     const productId = req.body.productId;
