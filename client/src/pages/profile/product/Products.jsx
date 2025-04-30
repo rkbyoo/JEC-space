@@ -4,6 +4,7 @@ import ProductForm from './ProductForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { SetLoader } from '../../../redux/loadersSlice';
 import { GetProducts, GetUserProduct } from '../../../apicalls/products';
+import Bid from './Bid.jsx';
 import moment from "moment"
 
 function Products() {
@@ -13,6 +14,7 @@ function Products() {
     const [showProductForm, setShowProductForm] = useState(false);
     const [products, setProducts] = useState(null)
     const dispatch = useDispatch()
+    const [showBids,setShowBids]=useState(false);
     const getData = async () => {
         try {
             dispatch(SetLoader(true))
@@ -62,7 +64,7 @@ function Products() {
             dataIndex: "action",
             //width: "0%", // or adjust depending on your total columns
             render: (text, record) => (
-              <div className="flex gap-4 text-lg text-gray-700">
+              <div className="flex gap-4 text-base text-gray-700">
                 <i 
                 className="ri-delete-bin-line cursor-pointer hover:text-red-600"
                 onClick={()=>{
@@ -77,6 +79,16 @@ function Products() {
                     setShowProductForm(true);
                     }}
                 ></i>
+
+                <span
+                    className="underline cursor-pointer"
+                    onClick={()=>{
+                        setSelectedProduct(record);
+                        setShowBids(true);
+                    }}
+                >
+                    show offers
+                </span>
               </div>
             ),
           }
@@ -108,6 +120,15 @@ function Products() {
                              deleteProduct={deleteProduct}
                              setDeleteProduct={setDeleteProduct}
                              getData={getData}
+                />
+            }
+
+            {
+                showBids &&
+                <Bid
+                    showBidsModal={showBids}
+                    setShowBidsModal={setShowBids}
+                    selectedProduct={selectedProduct}
                 />
             }
         </div>

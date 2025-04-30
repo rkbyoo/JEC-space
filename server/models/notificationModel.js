@@ -8,10 +8,10 @@ const notificationSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    // onClick:{
-    //     type:String,
-    //     required:true,
-    // },
+    onClick:{
+        type:String,
+        required:true,
+    },
     user:{
         type:mongoose.Schema.Types.ObjectId,
         ref : "User"

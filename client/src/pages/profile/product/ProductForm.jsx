@@ -31,6 +31,10 @@ const additionalThings = [
     label: 'Box Available',
     name: 'boxAvailable',
   },
+  {
+    label: 'Make counter-offers visible to everyone',
+    name: 'showOffersOnProduct'
+  }
 ];
 
 function ProductForm({ showProductForm, setShowProductForm, selectedProduct, setSelectedProduct, deleteProduct, setDeleteProduct, getData }) {
@@ -40,9 +44,16 @@ function ProductForm({ showProductForm, setShowProductForm, selectedProduct, set
   const [currentStep, setCurrentStep] = useState(0);
   const [addedProduct,setAddedProduct] = useState(null);
   const [images,setImages] = useState(addedProduct?.images || selectedProduct?.images);
+  //const [showBidsOnProductPage, setShowBidsOnProductPage] = useState(true);
   useEffect(() => {
     if (selectedProduct) {
       formRef.current.setFieldsValue(selectedProduct);
+    }
+    else {
+      // default value when adding a new product
+      formRef.current.setFieldsValue({
+        showOffersOnProduct: true,
+      });
     }
   }, [selectedProduct]);
   const updateImage = async (id) => {
@@ -214,7 +225,34 @@ function ProductForm({ showProductForm, setShowProductForm, selectedProduct, set
                 <Checkbox>{item.label}</Checkbox>
               </Form.Item>
             ))}
+            {/* <Form.Item
+              label="show Bids on Product Page"
+              name="showBidsOnProductPage"
+              valuePropName="checked"
+              className="m-0"
+            >
+              <Input
+                type="checkbox"
+
+                onChange={(e)=>{
+                  formRef.current.setFieldsValue({
+                    showBidsOnProductPage:e.target.checked,
+                  })
+                }}
+
+                checked={formRef.current?.getFieldValue('showBidsOnProductPage')}
+              />
+          </Form.Item> */}
+          {/* <Form.Item
+                name='showOffersOnProduct'
+                valuePropName="checked"
+                className="m-0"
+              >
+                <Checkbox></Checkbox>
+              </Form.Item> */}
           </div>
+
+          
         </Form>
       )}
 

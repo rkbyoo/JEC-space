@@ -41,7 +41,7 @@ const productSchema = new mongoose.Schema({
     },
     showOffersOnProduct: {
         type: Boolean,
-        default: false
+        default: true
     },
     images: {
         type: Array,

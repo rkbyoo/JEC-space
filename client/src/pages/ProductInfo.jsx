@@ -127,6 +127,8 @@ import { useParams } from 'react-router-dom';
 import { ShoppingBag, Package, Receipt, Shield, Wrench } from 'lucide-react';
 import BidModal from './BidModal';
 import { getAllBids } from '../apicalls/bid';
+import moment from 'moment';
+import {Tooltip} from 'antd';
 
 
 function ProductInfo() {
@@ -279,13 +281,13 @@ function ProductInfo() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">Name</span>
-                    <span className="font-medium text-white uppercase">
+                    <span className="font-medium text-gray-400 uppercase">
                       {product?.seller.name}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">Email</span>
-                    <span className="font-medium text-white">
+                    <span className="font-medium text-gray-400">
                       {product?.seller.email}
                     </span>
                   </div>
@@ -294,16 +296,76 @@ function ProductInfo() {
 
               <Divider/>
 
-              <div className="flex flex-col">
+              {/* <div className="flex flex-col">
                   <div className="flex justify-between">
                     <h1 className="m-0 p-0 text-lg font-semibold text-white ml-2">Try making a counter offer?</h1>
-                    <Button onClick={()=> setShowAddNewBid(!showAddNewBid)}
+                    <Button 
+                    className={`${
+                      user._id === product?.seller._id
+                        ? 'bg-red-500 cursor-not-allowed text-white border-none'
+                        : ''
+                    }`}
+                    onClick={()=> setShowAddNewBid(!showAddNewBid)}
                       disabled = {user._id === product?.seller._id}
                       >
-                      Make a Counter Offer
+                      <span className="text-white">Make a Counter Offer</span>
                     </Button>
                   </div>
+              </div> */}
+
+              
+              <div className="flex flex-col">
+                <div className="flex justify-between items-center">
+                  <h1 className="text-lg font-semibold text-white">Try making a counter offer?</h1>
+                  <Tooltip title={user._id === product?.seller._id ? "Sellers cannot make offers on their own product" : "Click to make a counter offer"}>
+                  <button 
+                    onClick={() => setShowAddNewBid(!showAddNewBid)}
+                    disabled={user._id === product?.seller._id}
+                    className={`
+                      relative px-6 py-3 rounded-lg font-medium
+                      transition-all duration-300 ease-in-out
+                      ${user._id === product?.seller._id 
+                        ? 'bg-gray-700 text-gray-400 cursor-not-allowed' 
+                        : 'bg-gradient-to-r from-blue-600 to-blue-400 text-white hover:shadow-lg hover:shadow-blue-500/20 hover:scale-105 active:scale-95'
+                      }
+                      before:absolute before:inset-0 before:rounded-lg before:bg-gradient-to-r before:from-blue-500/0 before:to-blue-300/30 
+                      before:opacity-0 before:transition-opacity hover:before:opacity-100 
+                      overflow-hidden
+                    `}
+                  >
+                    <span className="relative z-10">Make a Counter Offer</span>
+                    {!user._id || user._id !== product?.seller._id ? (
+                      <span className="absolute inset-0 overflow-hidden rounded-lg">
+                        <span className="absolute -inset-[10px] opacity-0 hover:opacity-20 bg-white blur-md transition-opacity duration-1000"></span>
+                      </span>
+                    ) : null}
+                  </button>
+                  </Tooltip>
+                </div>
               </div>
+
+
+              {product?.showOffersOnProduct && product?.bids.map((bid,index)=>{
+                return (
+                  <div key={index} className="border border-gray-700 border-solid p-3 rounded bg-gray-800">
+                    <div className="flex justify-between text-gray-700">
+                      <span className="text-gray-300">Name</span>
+                      <span className="text-gray-400">{bid?.buyer.name}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-600">
+                      <span className="text-gray-300">Counter-offer Amount</span>
+                      <span className="text-gray-400">$ {bid?.bidAmount}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-600">
+                      <span className="text-gray-300">Bid Place On</span>
+                      <span className="text-gray-400">
+                        {" "}
+                        {moment(bid?.createdAt).format("DD-MM-YYYY hh:mm A")}
+                      </span>
+                    </div>
+                  </div>  
+                )
+              })}
             </div>
           </div>
         </div>

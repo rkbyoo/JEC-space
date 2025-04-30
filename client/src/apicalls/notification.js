@@ -4,7 +4,7 @@ import axiosInstance from "./axiosInstance.js";
 
 export const addNotification=async(data)=>{
     try {
-        const response=await axiosInstance.post("/api/notifications/notify",data);
+        const response=await axiosInstance.post("/notification/notify",data);
         return response.data;
     } catch (error) {
         return error.response.data;
