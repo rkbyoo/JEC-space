@@ -37,7 +37,15 @@ exports.addProduct = async (req, res) => {
 //get all product details
 exports.getEveryProduct = async (req, res) => {
   try {
-    const products = await Product.find()
+    const { seller, categories = [], age = [], status } = req.body;
+    let filters = {};
+    if (seller) {
+      filters.seller = seller;
+    }
+    if (status) {
+      filters.status = status;
+    }
+    const products = await Product.find(filters)
       .populate("seller")
       .sort({ createdAt: -1 });
     if (!products) {
@@ -51,6 +59,9 @@ exports.getEveryProduct = async (req, res) => {
       message: "All the Products are fetched successfully",
       data: products,
     });
+
+    console.log("Request Body:", req.body);
+    console.log("Filters Applied:", filters);
     //filter by category
 
     //filter by age of the product
@@ -66,6 +77,14 @@ exports.getEveryProduct = async (req, res) => {
 //get all product details
 exports.getAllProduct = async (req, res) => {
   try {
+    const { seller, categories = [], age = [], status } = req.body;
+    let filters = {};
+    if (seller) {
+      filters.seller = seller;
+    }
+    if (status) {
+      filters.status = status;
+    }
     const products = await Product.find({ status: "approved" })
       .populate("seller")
       .sort({ createdAt: -1 });
