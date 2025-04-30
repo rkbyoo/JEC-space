@@ -3,7 +3,7 @@ const express = require("express");
 const fileupload=require("express-fileupload")
 const router = express.Router();
 
-const {updateName,updateProfilePicture}=require("../controllers/profile")
+const {updateName,updateProfilePicture,deleteAccount,changePassword}=require("../controllers/profile")
 const {authZ}=require("../middlewares/authZ")
 
 //middleware
@@ -13,8 +13,15 @@ router.use(fileupload({
     tempFileDir:"/tmp"
 }))
 
+
+//routes are 
+
 router.put("/updateProfilePicture",authZ,updateProfilePicture)
 router.put("/updateName",authZ,updateName)
+router.put("/changePassword",authZ,changePassword
+    
+)
+router.put("/deleteAccount",authZ,deleteAccount)
 
 module.exports=router
 
