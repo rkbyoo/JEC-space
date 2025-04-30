@@ -1,16 +1,28 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Upload, Button, message } from 'antd'
 import { EditOutlined, UploadOutlined } from '@ant-design/icons'
 import { UpdateName, UpdateProfilePicture } from '../../../apicalls/profile'
+import { SetUser } from '../../../redux/usersSlice'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 function ProfileInfo() {
+    const dispatch = useDispatch();
     const { user } = useSelector((state) => state.users)
     const [editing, setEditing] = useState(false)
     const [name, setName] = useState(user.name)
     const [modalOpen, setModalOpen] = useState(false)
     const [file, setFile] = useState(null)
     const [uploading, setUploading] = useState(false)
+    const navigate = useNavigate();
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    const [deletePassword, setDeletePassword] = useState("")
+    const [deleting, setDeleting] = useState(false)
+    const [changePwdModalOpen, setChangePwdModalOpen] = useState(false)
+    const [oldPwd, setOldPwd] = useState("")
+    const [newPwd, setNewPwd] = useState("")
+    const [changingPwd, setChangingPwd] = useState(false)
 
     const handleEdit = () => setEditing(true)
     const handleChange = (e) => setName(e.target.value)
@@ -22,7 +34,8 @@ function ProfileInfo() {
             if (res.success) {
                 message.success("Name updated successfully");
                 setEditing(false);
-                // Optionally, refresh user info here
+                // Update redux user state with new name
+                dispatch(SetUser(res.data));
             } else {
                 message.error(res.message || "Failed to update name");
             }
@@ -33,10 +46,10 @@ function ProfileInfo() {
 
     // Handle file selection
     const handleFileChange = (info) => {
-        if (info.file.status === 'removed') {
+        if (info.fileList.length === 0) {
             setFile(null)
-        } else if (info.file.status === 'done' || info.file.status === 'uploading' || info.file.originFileObj) {
-            setFile(info.file.originFileObj)
+        } else {
+            setFile(info.fileList[info.fileList.length - 1].originFileObj)
         }
     }
 
@@ -49,14 +62,15 @@ function ProfileInfo() {
         setUploading(true)
         try {
             const formData = new FormData();
-            formData.append("newProfilePhoto", file);
+            formData.append("newProfilePicture", file);
             formData.append("userId", user._id);
             const res = await UpdateProfilePicture(formData);
             if (res.success) {
                 message.success("Profile picture updated!");
                 setModalOpen(false);
                 setFile(null);
-                // Optionally, refresh user info here
+                // Update redux user state with new profile picture
+                dispatch(SetUser(res.data));
             } else {
                 message.error(res.message || "Failed to update profile picture");
             }
@@ -66,8 +80,52 @@ function ProfileInfo() {
         setUploading(false)
     }
 
+    // Handler for deleting account
+    const handleDeleteAccount = async () => {
+        setDeleting(true)
+        try {
+            const res = await DeleteAccount({
+                userId: user._id,
+                password: deletePassword
+            })
+            if (res.success) {
+                message.success("Account deleted successfully")
+                setDeleteModalOpen(false)
+                navigate('/login')
+            } else {
+                message.error(res.message || "Failed to delete account")
+            }
+        } catch (err) {
+            message.error("Error deleting account")
+        }
+        setDeleting(false)
+    }
+
+    // Handler for changing password
+    const handleChangePassword = async () => {
+        setChangingPwd(true)
+        try {
+            const res = await UpdatePassword({
+                userId: user._id,
+                oldPassword: oldPwd,
+                newPassword: newPwd
+            })
+            if (res.success) {
+                message.success("Password changed successfully")
+                setChangePwdModalOpen(false)
+                setOldPwd("")
+                setNewPwd("")
+            } else {
+                message.error(res.message || "Failed to change password")
+            }
+        } catch (err) {
+            message.error("Error changing password")
+        }
+        setChangingPwd(false)
+    }
+
     return (
-        <div className="text-black ">
+        <div className="text-black bg-white ">
             <div className="max-w-full p-8 rounded-2xl shadow-2xl border">
                 <div className="flex flex-col items-center mb-6 relative">
                     {/* Profile Picture with Edit Icon Inside */}
@@ -104,7 +162,8 @@ function ProfileInfo() {
                                     type="text"
                                     value={name}
                                     onChange={handleChange}
-                                    className="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white focus:outline-none"
+                                    className="bg-white text-black border border-gray-300 rounded px-2 py-1 focus:outline-none placeholder-black"
+                                    placeholder="Enter your name"
                                 />
                                 <button
                                     onClick={handleSave}
@@ -135,14 +194,31 @@ function ProfileInfo() {
                         <span className="font-semibold">Created At:</span> {new Date(user.createdAt).toLocaleString()}
                     </div>
                 </div>
+
+                {/* Add these buttons below the profile info */}
+                <div className="flex gap-4 mt-8">
+                    <Button danger onClick={() => setDeleteModalOpen(true)}>
+                        Delete Account
+                    </Button>
+                    <Button onClick={() => setChangePwdModalOpen(true)}>
+                        Change Password
+                    </Button>
+                </div>
             </div>
+
             {/* Modal for image upload */}
             <Modal
                 title="Change Profile Picture"
                 open={modalOpen}
-                onCancel={() => setModalOpen(false)}
+                onCancel={() => {
+                    setModalOpen(false);
+                    setFile(null);
+                }}
                 footer={[
-                    <Button key="cancel" onClick={() => setModalOpen(false)}>
+                    <Button key="cancel" onClick={() => {
+                        setModalOpen(false);
+                        setFile(null);
+                    }}>
                         Cancel
                     </Button>,
                     <Button
@@ -162,9 +238,94 @@ function ProfileInfo() {
                     maxCount={1}
                     onChange={handleFileChange}
                     accept="image/*"
+                    fileList={file ? [{
+                        uid: '-1',
+                        name: file.name,
+                        status: 'done',
+                        url: URL.createObjectURL(file),
+                    }] : []}
                 >
                     <Button icon={<UploadOutlined />}>Select Image</Button>
                 </Upload>
+            </Modal>
+
+            {/* Modal for Delete Account */}
+            <Modal
+                title="Delete Account"
+                open={deleteModalOpen}
+                onCancel={() => {
+                    setDeleteModalOpen(false)
+                    setDeletePassword("")
+                }}
+                footer={[
+                    <Button key="cancel" onClick={() => setDeleteModalOpen(false)}>
+                        Cancel
+                    </Button>,
+                    <Button
+                        key="delete"
+                        danger
+                        loading={deleting}
+                        onClick={handleDeleteAccount}
+                        disabled={!deletePassword}
+                    >
+                        Delete
+                    </Button>
+                ]}
+            >
+                <p>Enter your password to confirm account deletion:</p>
+                <input
+                    type="password"
+                    value={deletePassword}
+                    onChange={e => setDeletePassword(e.target.value)}
+                    className="w-full bg-white text-black border rounded px-2 py-1 mt-2 placeholder-black"
+                    placeholder="Confirm Password"
+                />
+            </Modal>
+
+            {/* Modal for Change Password */}
+            <Modal
+                title="Change Password"
+                open={changePwdModalOpen}
+                onCancel={() => {
+                    setChangePwdModalOpen(false)
+                    setOldPwd("")
+                    setNewPwd("")
+                }}
+                footer={[
+                    <Button key="cancel" onClick={() => setChangePwdModalOpen(false)}>
+                        Cancel
+                    </Button>,
+                    <Button
+                        key="change"
+                        type="primary"
+                        loading={changingPwd}
+                        onClick={handleChangePassword}
+                        disabled={!oldPwd || !newPwd}
+                    >
+                        Change Password
+                    </Button>
+                ]}
+            >
+                <div className="mb-2">
+                    <label>Current Password</label>
+                    <input
+                        type="password"
+                        value={oldPwd}
+                        onChange={e => setOldPwd(e.target.value)}
+                        className="w-full bg-white text-black border rounded px-2 py-1 mt-1 placeholder-black"
+                        placeholder="Current Password"
+                    />
+                </div>
+                <div>
+                    <label>New Password</label>
+                    <input
+                        type="password"
+                        value={newPwd}
+                        onChange={e => setNewPwd(e.target.value)}
+                        className="w-full bg-white text-black border rounded px-2 py-1 mt-1 placeholder-black"
+                        placeholder="New Password"
+                    />
+                </div>
             </Modal>
         </div>
     )
