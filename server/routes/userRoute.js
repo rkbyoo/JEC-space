@@ -26,6 +26,6 @@ router.get("/get-user", authZ, getAllUser);
 router.put("/update-user-status/:id", authZ, updateUserStatus);
 
 //otp send route
-router.post("/sendotp",sendOTP)
+router.post("/sendOTP",sendOTP)
 
 module.exports = router;
