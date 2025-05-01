@@ -56,8 +56,8 @@ function Filters({
     setFilters,
 }) {
     return (
-        <div className='w-72'>
-            <div className="flex justify-between ">
+        <div className='w-72 sticky top-24 h-fit'>
+            <div className="flex justify-between">
                 <h1 className="text-xl">
                     Filter
                 </h1>
@@ -71,10 +71,10 @@ function Filters({
                     Categories
                 </h1>
                 <div className="flex flex-col gap-1">
-                    {categories.map((category) => {
+                    {categories.map((category,index) => {
 
                         return (
-                            <div className="flex items-center gap-2">
+                            <div key={index} className="flex items-center gap-2">
                                 <input
                                     type="checkbox"
                                     name="category"
@@ -105,10 +105,10 @@ function Filters({
                     Ages
                 </h1>
                 <div className="flex flex-col gap-1">
-                    {ages.map((age) => {
+                    {ages.map((age,index) => {
 
                         return (
-                            <div className="flex items-center gap-2">
+                            <div key={index} className="flex items-center gap-2">
                                 <input
                                     type="checkbox"
                                     name="category"

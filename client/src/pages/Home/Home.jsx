@@ -48,9 +48,9 @@ function Home() {
         setFilters={setFilters}
       />}
       <div className='flex flex-col gap-5 w-full'>
-        <div className='flex gap-5'>
+        <div className='flex gap-5 sticky h-fit top-24 z-10'>
           {!showFilters && (
-            <i className="ri-equalizer-line cursor-pointer text-xl"
+            <i className="ri-equalizer-line cursor-pointer text-xl text-blue-600 self-center"
               onClick={() => setShowFilters(!showFilters)}
             ></i>
           )}
@@ -60,7 +60,7 @@ function Home() {
           />
         </div>
         <div className={
-          `grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 ${showFilters ? 'xl:grid-cols-4' : 'xl:grid-cols-5'}`
+          `grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 ${showFilters ? 'xl:grid-cols-3' : 'xl:grid-cols-4'}`
         }>
           {products?.map((product, index) => {
             return (
