@@ -79,7 +79,7 @@ function Contact() {
           {/* Contact Info */}
           <div className="space-y-8">
             <InfoCard title="Get in Touch" items={[
-              { icon: Mail, text: 'jecSpace@gmail.com' },
+              { icon: Mail, text: 'jecspace1@gmail.com' },
               { icon: Phone, text: '+91 99992 39939' },
               { icon: MapPin, text: 'Jorhat Engineering College, Garmur, Jorhat, Assam. PIN-785007 ' },
             ]} />
