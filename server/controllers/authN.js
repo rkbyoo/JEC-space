@@ -2,12 +2,66 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const OTP = require("../models/otpModel");
+const otpGenerator=require("otp-generator")
+
+
+//otp generation and sending
+exports.sendOTP=async(req,res)=>{
+  try {
+      const {email}=req.body
+  const userExist=await User.findOne({email})
+  if(userExist){
+      return res.status(403).json({
+          success:false,
+          message:"user already exists"
+      })
+  }
+  //using otp generator here to generate otps
+  let otp=otpGenerator.generate(6,{
+      upperCaseAlphabets:false,
+      lowerCaseAlphabets:false,
+      specialChars:false,
+  })
+  //checking if the generated otp is unique or not
+  let OtpExists=await OTP.findOne({otp:otp})
+  while(OtpExists)
+  {
+      otp=otpGenerator.generate(6,{
+          upperCaseAlphabets:false,
+          lowerCaseAlphabets:false,
+          specialChars:false,
+      })
+      OtpExists=await OTP.findOne({otp:otp})
+  }
+  //saving the OTP in the database
+  const OtpPayload={email,otp}
+  const otpBody=await OTP.create(OtpPayload)
+  console.log(otpBody)
+  return res.status(200).json({
+      success:true,
+      message:"OTP sent successfully",
+      otp:otp
+  })
+
+  } catch (error) {
+      console.error(error)
+      res.status(500).json({
+          success:false,
+          message:"error occured while sending OTP"
+      })
+  } 
+}
+
+
+
+
+
 // sign up of user
 exports.signUp = async (req, res) => {
   try {
     //fetch data
-    const { name, email, password, role, timestamps, status} =
-      req.body;
+    const { name, email, password, role, timestamps, status,otp} =req.body;
 
     console.log("Incoming signup data:", req.body);
 
@@ -26,6 +80,13 @@ exports.signUp = async (req, res) => {
         message: "user already exists",
       });
     }
+    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+		if (response.length === 0 || otp !== response[0].otp) {
+			return res.status(400).json({
+				success: false,
+				message: "The OTP is not valid",
+			});
+		}
 
     //hash password
     const hashedPassword = await bcrypt.hash(password, 10);

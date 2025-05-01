@@ -8,6 +8,7 @@ const {
   getCurrentUser,
   getAllUser,
   updateUserStatus,
+  sendOTP
 } = require("../controllers/authN");
 const { authZ } = require("../middlewares/authZ");
 
@@ -23,5 +24,8 @@ router.get("/get-user", authZ, getAllUser);
 
 // update user status
 router.put("/update-user-status/:id", authZ, updateUserStatus);
+
+//otp send route
+router.post("/sendotp",sendOTP)
 
 module.exports = router;
