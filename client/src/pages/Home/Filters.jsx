@@ -1,4 +1,5 @@
 import React from 'react'
+import { useEffect } from 'react';
 
 const categories = [
     {
@@ -54,7 +55,13 @@ function Filters({
     showFilters,
     setShowFilters,
     setFilters,
+    getData,
 }) {
+
+    useEffect(() => {
+        getData(filters);
+      }, [filters]); // <-- this runs getData every time filters change
+      
     return (
         <div className='w-72 sticky top-24 h-fit'>
             <div className="flex justify-between">
@@ -80,18 +87,15 @@ function Filters({
                                     name="category"
                                     checked={filters.category.includes(category.value)}
                                     onChange={(e) => {
-                                        if (e.target.checked) {
-                                            setFilters({
-                                                ...filters,
-                                                category: [...filters.category, category.value],
-                                            });
-                                        } else {
-                                            setFilters({
-                                                ...filters,
-                                                category: filters.category.filter((item) => item !== category.value),
-                                            });
-                                        }
-                                    }}
+                                        const updatedCategories = e.target.checked
+                                          ? [...filters.category, category.value]
+                                          : filters.category.filter((item) => item !== category.value);
+                                      
+                                        setFilters({
+                                          ...filters,
+                                          category: updatedCategories,
+                                        });
+                                      }}
                                 />
                                 <label htmlFor='category'>{category.name}</label>
                             </div>
@@ -113,7 +117,7 @@ function Filters({
                                     type="checkbox"
                                     name="category"
                                     checked={filters.age.includes(age.value)}
-                                    onChange={(e) => {
+                                    onChange={async(e) => {
                                         if (e.target.checked) {
                                             setFilters({
                                                 ...filters,
@@ -125,6 +129,7 @@ function Filters({
                                                 age: filters.age.filter((item) => item !== age.value),
                                             });
                                         }
+                                    
                                     }}
                                 />
                                 <label htmlFor='age'>{age.name}</label>

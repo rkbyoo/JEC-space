@@ -21,9 +21,9 @@ export const GetAllProducts = async () => {
 };
 
 // get approved products
-export const GetProducts = async () => {
+export const GetProducts = async (filters) => {
   try {
-    const response = await axiosInstance.get("/products/get-all-product");
+    const response = await axiosInstance.post("/products/get-all-product",filters);
     return response.data;
   } catch (error) {
     return error.message;

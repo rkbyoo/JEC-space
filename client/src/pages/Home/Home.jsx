@@ -6,46 +6,43 @@ import { SetLoader } from '../../redux/loadersSlice';
 import { ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Filters from './Filters';
-
+import { setFilters } from '../../redux/filtersSlice';
 
 function Home() {
-  const [showFilters, setShowFilters] = useState(true);
-  const { user } = useSelector((state) => state.users)
-  const [products, setProducts] = useState([]);
-  const [filters, setFilters] = useState({
-    status: "approved",
-    category: [],
-    age: [],
-  });
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const filters = useSelector((state) => state.filters); // 👈 get filters from Redux
+  const [searchText, setSearchText] = useState(filters.search || '');
+
+  const [products, setProducts] = useState([]);
+  const [showFilters, setShowFilters] = useState(true);
+
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
-      const products = await GetProducts(filters);
+      const response = await GetProducts(filters); // 👈 filters from Redux
       dispatch(SetLoader(false));
-      if (products.success) {
-        setProducts(products.data);
+      if (response.success) {
+        setProducts(response.data);
       }
     } catch (error) {
       dispatch(SetLoader(false));
       message.error(error.message);
     }
-  }
-  useEffect(() => {
-    getData();
-  }, [])
+  };
 
   useEffect(() => {
-    console.log(filters);
-  }, [filters])
+    getData(); // 👈 re-fetch when filters change
+  }, [filters]);
+
   return (
     <div className={`flex gap-5 ${!showFilters ? 'justify-center' : ''}`}>
       {showFilters && <Filters
-        filters={filters}
-        showFilters={showFilters}
-        setShowFilters={setShowFilters}
-        setFilters={setFilters}
+          filters={filters}
+          setFilters={(newFilters) => dispatch(setFilters(newFilters))} // 👈 update Redux
+          showFilters={showFilters}
+          setShowFilters={setShowFilters}
+          getData={getData}
       />}
       <div className='flex flex-col gap-5 w-full'>
         <div className='flex gap-5 sticky h-fit top-24 z-10'>
@@ -54,10 +51,18 @@ function Home() {
               onClick={() => setShowFilters(!showFilters)}
             ></i>
           )}
-          <input type="text"
+          <input
+            type="text"
+            value={searchText}
+            onChange={(e) => {
+              const value = e.target.value;
+              setSearchText(value);
+              dispatch(setFilters({ ...filters, search: value }));
+            }}
             className='border rounded-xl border-gray-300 border-solid p-2 w-full h-12'
             placeholder='Search for products'
           />
+
         </div>
         <div className={
           `grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 ${showFilters ? 'xl:grid-cols-3' : 'xl:grid-cols-4'}`
