@@ -40,14 +40,14 @@ function Home() {
     console.log(filters);
   }, [filters])
   return (
-    <div className='flex gap-5'>
+    <div className={`flex gap-5 ${!showFilters ? 'justify-center' : ''}`}>
       {showFilters && <Filters
         filters={filters}
         showFilters={showFilters}
         setShowFilters={setShowFilters}
         setFilters={setFilters}
       />}
-      <div className='flex flex-col gap-5'>
+      <div className='flex flex-col gap-5 w-full'>
         <div className='flex gap-5'>
           {!showFilters && (
             <i className="ri-equalizer-line cursor-pointer text-xl"
