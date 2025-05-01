@@ -12,6 +12,7 @@ import Loader from "./components/Loader";
 import { useSelector } from "react-redux";
 import Admin from "./pages/admin/Admin"
 import ProductInfo from "./pages/ProductInfo.jsx";
+import OtpVerification from "./pages/OtpVerification";
 
 function App() {
   const { loading } = useSelector(state => state.loaders)
@@ -30,6 +31,7 @@ function App() {
             <Route path='/profile' element={<ProtectedRoute> <Profile /> </ProtectedRoute>} />
             <Route path='/admin' element={<ProtectedRoute> <Admin /> </ProtectedRoute>} />
             <Route path='/product/:id' element={<ProtectedRoute> <ProductInfo /> </ProtectedRoute>} />
+            <Route path='/otpverification' element={<OtpVerification />} />
             <Route path='*' element={<Notfoundpage />} />
           </Routes>
         </div>
