@@ -5,7 +5,14 @@ require("dotenv").config();
 exports.authZ = async (req, res, next) => {
   try {
     //parse the token from header
-    const token = req.header("authorization").split(" ")[1];
+    const authHeader = req.header("authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(403).json({
+        success: false,
+        message: "Authorization header missing or malformed",
+      });
+    }
+    const token = authHeader.split(" ")[1];
     //decrypt the token using verify
     const decryptedToken = jwt.verify(token, process.env.JWT_SECRET);
     //pass the token as request for the next function
