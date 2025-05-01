@@ -66,7 +66,7 @@ exports.signUp = async (req, res) => {
     console.log("Incoming signup data:", req.body);
 
     //data validation
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !otp) {
       return res.status(404).json({
         success: false,
         message: "please fill up all the details",

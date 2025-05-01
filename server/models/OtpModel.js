@@ -12,7 +12,8 @@ const otpSchema=new mongoose.Schema({
     },
     createdAt:{
         type:Date,
-        default:Date.now(),
+        default:Date.now,   
+         //note it is not date.now() cz it will save the date or time of server startup so it will work for 1st 5 mins but after that it is not gonna work due to expiry time issue which is already passed 
         expires:5*60,
         
     }

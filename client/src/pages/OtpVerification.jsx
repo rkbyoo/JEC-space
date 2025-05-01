@@ -25,7 +25,7 @@ const OtpVerification = () => {
                 otp: values.otp
             });
             if (response.success) {
-                message.success("🎉 Signup successful! Please login.");
+                message.success("Signup successful! Please login.");
                 navigate("/login");
             } else {
                 message.error(response.message || "OTP verification failed");
