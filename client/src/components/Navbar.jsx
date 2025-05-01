@@ -58,7 +58,7 @@ const Navbar = () => {
   return (
     <>
       {/* Mobile Bottom Navbar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 text-white flex justify-around items-center py-3 px-2 z-10">
+      <div className="md:hidden fixed top-0 left-0 right-0 bg-gray-900 text-white flex justify-around items-center py-3 px-2 z-10">
         
         <Link to="/" className="flex flex-col items-center justify-center">
           <AiFillHome size={24} className="hover:text-blue-400 transition" />
@@ -84,7 +84,33 @@ const Navbar = () => {
           <IoIosContact size={24} className="hover:text-blue-400 transition" />
           <span className="text-xs mt-1">Contact</span>
         </Link>
+
+        <div className="flex items-center space-x-3">
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                setShowNotifications(true);
+                readnotifications();
+              }}
+            >
+              <Badge
+                count={
+                  notifications.filter((notification) => !notification.read).length
+                }
+              >
+                <Avatar
+                  shape="circle"
+                  size={64}
+                  icon={
+                    <i className="ri-notification-2-line hover:text-blue-400 transition" />
+                  }
+                />
+              </Badge>
+            </div>
+          </div>
       </div>
+
+      
 
       {/* Desktop Navbar */}
       <div className="hidden md:flex w-full h-16 bg-gray-900 text-white flex-row justify-between items-center p-12 fixed top-0 left-0 right-0 z-50">
@@ -114,53 +140,30 @@ const Navbar = () => {
             <span className="hidden md:inline">Contact</span>
           </Link>
 
-
-          {/* <div className="flex items-center space-x-3 ">
-            <Badge
-              count={
-                notifications.filter((notification) => !notification.read).length
-              }
-
-              onClick={() => {setShowNotifications(true);readnotifications()}}
-
+          {isLoggedIn && <div className="flex items-center space-x-3">
+            <div
               className="cursor-pointer"
+              onClick={() => {
+                setShowNotifications(true);
+                readnotifications();
+              }}
             >
-              <Avatar
-                shape="circle"
-                size={64}
-                icon={
-                  <i className="ri-notification-2-line hover:text-blue-400 transition"></i>
+              <Badge
+                count={
+                  notifications.filter((notification) => !notification.read).length
                 }
-              />
-            </Badge>
-          </div> */}
-{
-  isLoggedIn &&
-  <div className="flex items-center space-x-3">
-  <div
-    className="cursor-pointer"
-    onClick={() => {
-      setShowNotifications(true);
-      readnotifications();
-    }}
-  >
-    <Badge
-      count={
-        notifications.filter((notification) => !notification.read).length
-      }
-    >
-      <Avatar
-        shape="circle"
-        size={40}
-        icon={
-          <i className="ri-notification-2-line hover:text-blue-400 transition" />
-        }
-      />
-      <span className="text-white">notification</span>
-    </Badge>
-  </div>
-</div>
-}
+              >
+                <Avatar
+                  shape="circle"
+                  size={40}
+                  icon={
+                    <i className="ri-notification-2-line hover:text-blue-400 transition" />
+                  }
+                />
+              </Badge>
+            </div>
+          </div>}
+
 
           {<Notifications
             notifications={notifications}
