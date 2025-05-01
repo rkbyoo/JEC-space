@@ -134,8 +134,9 @@ const Navbar = () => {
               />
             </Badge>
           </div> */}
-
-<div className="flex items-center space-x-3">
+{
+  isLoggedIn &&
+  <div className="flex items-center space-x-3">
   <div
     className="cursor-pointer"
     onClick={() => {
@@ -150,15 +151,16 @@ const Navbar = () => {
     >
       <Avatar
         shape="circle"
-        size={64}
+        size={40}
         icon={
           <i className="ri-notification-2-line hover:text-blue-400 transition" />
         }
       />
+      <span className="text-white">notification</span>
     </Badge>
   </div>
 </div>
-
+}
 
           {<Notifications
             notifications={notifications}
@@ -169,6 +171,8 @@ const Navbar = () => {
           />}
 
         </div>
+
+
 
         {/* Bottom profile section */}
         <div className="flex items-center space-x-4">
