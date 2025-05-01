@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Input, Button, message } from 'antd'
 import { Link, useNavigate} from 'react-router-dom'
-import { SingupUser } from '../apicalls/users'
+import { SignupUser } from '../apicalls/users'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { SetLoader } from '../redux/loadersSlice'
@@ -12,7 +12,7 @@ function Signup() {
     const onFinish = async (values) => {
         try {
             dispatch(SetLoader(true))
-            const response = await SingupUser(values);
+            const response = await SignupUser(values);
             console.log(response)
             dispatch(SetLoader(false))
             // Always access actual data using response.data

@@ -1,7 +1,7 @@
 import axiosInstance from "./axiosInstance";
 
 //signup api call
-export const SingupUser = async (payload) => {
+export const SignupUser = async (payload) => {
   try {
     const response = await axiosInstance.post("/users/signup", payload);
     return response.data;
