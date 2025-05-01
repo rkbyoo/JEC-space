@@ -1,52 +1,10 @@
-// import React from 'react'
-// import {Divider, Modal} from 'antd'
-// import { getNotification } from "../apicalls/notification.js";
-// import { useEffect } from 'react';
-// function Notifications({
-//     notifications = [],
-//     reloadNotifications,
-//     showNotifications,
-//     setShowNotifications,
-//     refresh
-// }) {
-//   console.log("notification : ",showNotifications);
-//   useEffect(() => {
-//     if (showNotifications) {
-//       refresh();
-//     }
-//   }, [showNotifications]);
-  
-//   return (
-//     <div>
-//         <Modal
-//         title="Notifications"
-//         open={showNotifications}
-//         onCancel={()=>setShowNotifications(false)}
-//         footer={null}
-//         centerred
-//         width={1000}
-//         >    
-//           <div className="flex flex-col gap-2">
-//               {notifications.map((notification,index)=>(
-//                 <div key={index} className="flex flex-col border border-solid p-2 border-gray-300 rounded">
-//                     <h1 className="text-gray-700">{notification.title}</h1>
-
-//                     <span className="text-gray-500">{notification.message}</span>
-//                 </div>
-//               ))}
-//           </div>
-//         </Modal>
-//     </div>
-    
-    
-//   )
-// }
-
-// export default Notifications
-
 import React, { useEffect } from 'react';
-import { Modal } from 'antd';
+import { Button, Modal, message } from 'antd';
 import { Bell } from 'lucide-react';
+import { deleteNotification, deleteAllNotification } from '../apicalls/notification';
+import { useDispatch } from 'react-redux';
+import { SetLoader } from '../redux/loadersSlice';
+import { readNotification } from '../apicalls/notification';
 
 function Notifications({
   notifications = [],
@@ -55,11 +13,56 @@ function Notifications({
   setShowNotifications,
   refresh
 }) {
+  const dispatch = useDispatch();
+  const deletenotification = async(id) => {
+    try {
+      dispatch(SetLoader(true));
+      const response = await deleteNotification(id);
+      if(response.success)
+      {
+        message.success(response.message);
+        await refresh();
+      }
+      dispatch(SetLoader(false));
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  }
+  const deleteAll = async() => {
+    try {
+      dispatch(SetLoader(true));
+      const response = await deleteAllNotification();
+      if(response.success)
+      {
+        message.success(response.message);
+        await refresh();
+      }
+      dispatch(SetLoader(false));
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  }
+  const readnotifications=async()=>{
+    const hasUnread = notifications.some((n) => !n.read);
+    if (hasUnread) {
+      try {
+        await readNotification();
+      } catch (error) {
+        message.error(error.message);
+      }
+    }
+  }
   useEffect(() => {
     if (showNotifications) {
-      refresh();
+      const fetchData = async () => {
+        await refresh();
+      };
+      fetchData();
     }
   }, [showNotifications]);
+  
   console.log("Notification read :",notifications);
   return (
     <Modal
@@ -68,10 +71,13 @@ function Notifications({
         <div className="flex items-center gap-2 text-white">
           <Bell className="w-5 h-5 text-blue-400" />
           <span className="text-lg font-semibold">Notifications</span>
+          <Button className='bg-red-400 ml-2 font-semibold'
+            onClick={async()=>await deleteAll()}
+          >Clear All</Button>
         </div>
       }
       open={showNotifications}
-      onCancel={() => {refresh();setShowNotifications(false)}}
+      onCancel={async() => {await readnotifications();await refresh();setShowNotifications(false)}}
       footer={null}
       centered
       width={1000}
@@ -122,9 +128,19 @@ function Notifications({
               <span className="text-orange-800 mr-1">{notification?.read ? "Seen" : "New"}</span>
               </div>
               
+              <div className='flex justify-between'>
               <p className="text-gray-400 text-sm leading-relaxed">
                 {notification.message}
               </p>
+
+              <i 
+                className="ri-delete-bin-line cursor-pointer mr-1 text-orange-800 hover:text-red-600"
+                onClick={async()=>{
+                      await deletenotification(notification._id);
+                    }}
+                ></i>
+              </div>
+              
             </div>
           ))
         )}

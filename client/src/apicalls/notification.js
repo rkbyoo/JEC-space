@@ -26,20 +26,33 @@ export const getNotification=async()=>{
 
 export const deleteNotification=async(id)=>{
     try {
-        const response=await axiosInstance.delete(`/notification/delete-notifications/${id}`);
+        const response=await axiosInstance.delete(`/notification/delete-notification/${id}`);
         return response.data;
     } catch (error) {
         return error.response.data;
     }
 }
 
-//read all notifications by user
+//delete all notifications
 
-export const readNotification=async()=>{
+export const deleteAllNotification=async()=>{
     try {
-        const response=await axiosInstance.put("/notification/read-all-notifications");
+        const response=await axiosInstance.delete(`/notification/delete-all-notification`);
         return response.data;
     } catch (error) {
         return error.response.data;
     }
 }
+
+
+//read all notifications by user id
+
+export const readNotification=async(id)=>{
+    try {
+        const response=await axiosInstance.put(`/notification/read-all-notifications`);
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+

@@ -59,14 +59,43 @@ const deleteNotification = async (req, res) => {
   }
 };
 
+//delete all notifications
+
+const deleteAllNotification = async (req, res) => {
+  try {
+    await Notification.deleteMany({user : req.body.userId});
+    res.send({
+      success: true,
+      message: "Notification Deleted successfully",
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 //read all notification by user
 
 const readNotification = async (req, res) => {
   try {
+
+    const userId = req.body.userId;
+    if (!userId) {
+      return res.status(400).send({ success: false, message: "User ID required" });
+    }
     await Notification.updateMany(
       { user: req.body.userId, read: false },
       { $set: { read: true } }
     );
+    const updatedNotifications = await Notification.find().sort({ createdAt: -1 });
+
+    res.send({
+      success: true,
+      message: "All notifications marked as read",
+      data:updatedNotifications
+    });
   } catch (error) {
     res.send({
       success: false,
@@ -82,4 +111,5 @@ module.exports = {
   getNotification,
   deleteNotification,
   readNotification,
+  deleteAllNotification
 };

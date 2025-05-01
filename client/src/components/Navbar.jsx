@@ -1,210 +1,381 @@
+// import React, { useEffect, useState } from "react";
+// import { Link, useNavigate, useLocation } from "react-router-dom";
+// import { AiFillHome, AiOutlineInfoCircle } from "react-icons/ai";
+// import { IoIosContact } from "react-icons/io";
+// import { useSelector } from "react-redux";
+// import { GetCurrentUser } from "../apicalls/users";
+// import notification from "../assets/notification.png"
+// import { IoNotificationsCircleSharp } from "react-icons/io5";
+// import { ClockCircleOutlined } from '@ant-design/icons';
+// import { Avatar, Badge, Space } from 'antd';
+// import Notifications from "./Notifications";
+// import { getNotification, readNotification } from "../apicalls/notification";
+// const Navbar = () => {
+//   const { user } = useSelector((state) => state.users);
+//   const [isLoggedIn, setIsLoggedIn] = useState(false);
+//   const navigate = useNavigate();
+//   const location = useLocation();
+
+ 
+//   const [notifications = [], setNotifications] = useState([]);
+//   const [showNotifications, setShowNotifications] = useState(false);
+
+//   useEffect(() => {
+//     const token = localStorage.getItem("token");
+//     setIsLoggedIn(!!token);
+//     if (token) {
+//       getUserNotifications();
+//     }
+   
+//   }, [location]);
+
+//   const getUserNotifications = async () => {
+//     try {
+//       const response = await getNotification();
+//       if (response.success) {
+//         setNotifications(response.data);
+//       }
+
+//     } catch (error) {
+//       console.error("Error fetching notifications :", error);
+//     }
+//   }
+
+//   const readnotifications = async () => {
+//     try {
+//       if (!user?._id) return;
+//       await readNotification();
+//     } catch (error) {
+//       message.error(error.message);
+//     }
+//   }
+
+//   const handleLogout = () => {
+//     localStorage.removeItem("token");
+//     setIsLoggedIn(false);
+//     setNotifications([]);
+//     navigate("/login");
+//   };
+
+//   return (
+//     <>
+//       {/* Mobile Bottom Navbar */}
+//       <div className="md:hidden fixed top-0 left-0 right-0 bg-gray-900 text-white flex justify-around items-center py-3 px-2 z-10">
+        
+//         <Link to="/" className="flex flex-col items-center justify-center">
+//           <AiFillHome size={24} className="hover:text-blue-400 transition" />
+//           <span className="text-xs mt-1">Home</span>
+//         </Link>
+
+//         {isLoggedIn && (
+//           <Link
+//             to="/profile"
+//             className="flex flex-col items-center justify-center"
+//           >
+//             <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-sm font-bold uppercase">
+//               {user?.name ? user.name.charAt(0) : "G"}
+//             </div>
+//             <span className="text-xs mt-1">Profile</span>
+//           </Link>
+//         )}
+
+//         <Link
+//           to="/contact"
+//           className="flex flex-col items-center justify-center"
+//         >
+//           <IoIosContact size={24} className="hover:text-blue-400 transition" />
+//           <span className="text-xs mt-1">Contact</span>
+//         </Link>
+
+//         <div className="flex items-center space-x-3">
+//             <div
+//               className="cursor-pointer"
+//               onClick={() => {
+//                 setShowNotifications(true);
+//                 readnotifications();
+//               }}
+//             >
+//               <Badge
+//                 count={
+//                   notifications.filter((notification) => !notification.read).length
+//                 }
+//               >
+//                 <Avatar
+//                   shape="circle"
+//                   size={64}
+//                   icon={
+//                     <i className="ri-notification-2-line hover:text-blue-400 transition" />
+//                   }
+//                 />
+//               </Badge>
+//             </div>
+//           </div>
+//       </div>
+
+      
+
+//       {/* Desktop Navbar */}
+//       <div className="hidden md:flex w-full h-16 bg-gray-900 text-white flex-row justify-between items-center p-12 fixed top-0 left-0 right-0 z-50">
+//         {/* Left nav items */}
+//         <div className="flex space-x-6 items-center">
+//           <Link
+//             to="/"
+//             className="flex items-center space-x-3 hover:text-blue-400 transition"
+//           >
+//             <AiFillHome size={24} />
+//             <span className="hidden md:inline">Home</span>
+//           </Link>
+
+//           <Link
+//             to="/about"
+//             className="flex items-center space-x-3 hover:text-blue-400 transition"
+//           >
+//             <AiOutlineInfoCircle size={24} />
+//             <span className="hidden md:inline">About</span>
+//           </Link>
+
+//           <Link
+//             to="/contact"
+//             className="flex items-center space-x-3 hover:text-blue-400 transition"
+//           >
+//             <IoIosContact size={24} />
+//             <span className="hidden md:inline">Contact</span>
+//           </Link>
+
+//           {isLoggedIn && <div className="flex items-center space-x-3">
+//             <div
+//               className="cursor-pointer"
+//               onClick={() => {
+//                 setShowNotifications(true);
+//                 readnotifications();
+//               }}
+//             >
+//               <Badge
+//                 count={
+//                   notifications.filter((notification) => !notification.read).length
+//                 }
+//               >
+//                 <Avatar
+//                   shape="circle"
+//                   size={40}
+//                   icon={
+//                     <i className="ri-notification-2-line hover:text-blue-400 transition" />
+//                   }
+//                 />
+//               </Badge>
+//             </div>
+//           </div>}
+
+
+//           {<Notifications
+//             notifications={notifications}
+//             reloadNotifications={setNotifications}
+//             showNotifications={showNotifications}
+//             setShowNotifications={setShowNotifications}
+//             refresh={getUserNotifications}
+//           />}
+
+//         </div>
+
+
+
+//         {/* Bottom profile section */}
+//         <div className="flex items-center space-x-4">
+//           {isLoggedIn && (
+//             <Link
+//               to={user?.role === "admin" ? "/admin" : "/profile"}
+//               className="flex items-center space-x-2 hover:bg-gray-800 px-3 py-2 rounded transition"
+//             >
+//               {/* Profile Picture */}
+//               <img src={user?.profilePicture} className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-lg font-bold uppercase text-white">
+                
+//               </img>
+
+//               {/* Username beside the picture */}
+//               <span className="text-base font-medium hidden md:inline">
+//                 {user?.name}
+//               </span>
+//             </Link>
+//           )}
+
+//           {/* Logout/Login button */}
+//           <button
+//             onClick={handleLogout}
+//             className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded transition"
+//           >
+//             {isLoggedIn ? "Logout" : "Login"}
+//           </button>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Navbar;
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AiFillHome, AiOutlineInfoCircle } from "react-icons/ai";
 import { IoIosContact } from "react-icons/io";
 import { useSelector } from "react-redux";
-import { GetCurrentUser } from "../apicalls/users";
-import notification from "../assets/notification.png"
-import { IoNotificationsCircleSharp } from "react-icons/io5";
-import { ClockCircleOutlined } from '@ant-design/icons';
-import { Avatar, Badge, Space } from 'antd';
+import { message, Avatar, Badge } from "antd";
 import Notifications from "./Notifications";
 import { getNotification, readNotification } from "../apicalls/notification";
+
 const Navbar = () => {
   const { user } = useSelector((state) => state.users);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-
- 
   const [notifications = [], setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // ✅ Check token on route change
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
-    if (token) {
-      getUserNotifications();
-    }
-   
   }, [location]);
 
-  const getUserNotifications = async () => {
+  // ✅ Fetch notifications after user is loaded
+  useEffect(() => {
+    if (user?._id) {
+      const fetchData = async () => {
+        await fetchNotifications();
+      };
+      fetchData();
+    }
+  }, [user?._id]);
+
+  const fetchNotifications = async () => {
     try {
       const response = await getNotification();
       if (response.success) {
         setNotifications(response.data);
       }
-
     } catch (error) {
-      console.error("Error fetching notifications :", error);
+      console.error("Error fetching notifications:", error);
     }
-  }
+  };
 
-  const readnotifications = async () => {
-    try {
-      await readNotification();
-    } catch (error) {
-      message.error(error.message);
-    }
-  }
+  const handleNotificationClick = () => {
+    setShowNotifications(true);
+    // const hasUnread = notifications.some((n) => !n.read);
+    // if (hasUnread) {
+    //   try {
+    //     await readNotification();
+    //     fetchNotifications(); // Refresh list
+    //   } catch (error) {
+    //     message.error(error.message);
+    //   }
+    // }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
+    setNotifications([]);
     navigate("/login");
   };
 
   return (
     <>
-      {/* Mobile Bottom Navbar */}
+      {/* Mobile Navbar */}
       <div className="md:hidden fixed top-0 left-0 right-0 bg-gray-900 text-white flex justify-around items-center py-3 px-2 z-10">
-        
-        <Link to="/" className="flex flex-col items-center justify-center">
-          <AiFillHome size={24} className="hover:text-blue-400 transition" />
+        <Link to="/" className="flex flex-col items-center">
+          <AiFillHome size={24} />
           <span className="text-xs mt-1">Home</span>
         </Link>
 
         {isLoggedIn && (
-          <Link
-            to="/profile"
-            className="flex flex-col items-center justify-center"
-          >
+          <Link to="/profile" className="flex flex-col items-center">
             <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-sm font-bold uppercase">
-              {user?.name ? user.name.charAt(0) : "G"}
+              {user?.name?.charAt(0) || "G"}
             </div>
             <span className="text-xs mt-1">Profile</span>
           </Link>
         )}
 
-        <Link
-          to="/contact"
-          className="flex flex-col items-center justify-center"
-        >
-          <IoIosContact size={24} className="hover:text-blue-400 transition" />
+        <Link to="/contact" className="flex flex-col items-center">
+          <IoIosContact size={24} />
           <span className="text-xs mt-1">Contact</span>
         </Link>
 
-        <div className="flex items-center space-x-3">
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                setShowNotifications(true);
-                readnotifications();
-              }}
-            >
-              <Badge
-                count={
-                  notifications.filter((notification) => !notification.read).length
-                }
-              >
-                <Avatar
-                  shape="circle"
-                  size={64}
-                  icon={
-                    <i className="ri-notification-2-line hover:text-blue-400 transition" />
-                  }
-                />
-              </Badge>
-            </div>
+        {isLoggedIn && (
+          <div className="cursor-pointer" onClick={handleNotificationClick}>
+            <Badge count={notifications.filter((n) => !n.read).length}>
+              <Avatar
+                shape="circle"
+                size={64}
+                icon={<i className="ri-notification-2-line" />}
+              />
+            </Badge>
           </div>
+        )}
       </div>
 
-      
-
       {/* Desktop Navbar */}
-      <div className="hidden md:flex w-full h-16 bg-gray-900 text-white flex-row justify-between items-center p-12 fixed top-0 left-0 right-0 z-50">
-        {/* Left nav items */}
+      <div className="hidden md:flex w-full h-16 bg-gray-900 text-white justify-between items-center p-12 fixed top-0 left-0 right-0 z-50">
+        {/* Left links */}
         <div className="flex space-x-6 items-center">
-          <Link
-            to="/"
-            className="flex items-center space-x-3 hover:text-blue-400 transition"
-          >
+          <Link to="/" className="flex items-center space-x-3">
             <AiFillHome size={24} />
-            <span className="hidden md:inline">Home</span>
+            <span>Home</span>
           </Link>
-
-          <Link
-            to="/about"
-            className="flex items-center space-x-3 hover:text-blue-400 transition"
-          >
+          <Link to="/about" className="flex items-center space-x-3">
             <AiOutlineInfoCircle size={24} />
-            <span className="hidden md:inline">About</span>
+            <span>About</span>
           </Link>
-
-          <Link
-            to="/contact"
-            className="flex items-center space-x-3 hover:text-blue-400 transition"
-          >
+          <Link to="/contact" className="flex items-center space-x-3">
             <IoIosContact size={24} />
-            <span className="hidden md:inline">Contact</span>
+            <span>Contact</span>
           </Link>
 
-          {isLoggedIn && <div className="flex items-center space-x-3">
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                setShowNotifications(true);
-                readnotifications();
-              }}
-            >
-              <Badge
-                count={
-                  notifications.filter((notification) => !notification.read).length
-                }
-              >
+          {isLoggedIn && (
+            <div className="cursor-pointer" onClick={handleNotificationClick}>
+              <Badge count={notifications.filter((n) => !n.read).length}>
                 <Avatar
                   shape="circle"
                   size={40}
-                  icon={
-                    <i className="ri-notification-2-line hover:text-blue-400 transition" />
-                  }
+                  icon={<i className="ri-notification-2-line" />}
                 />
               </Badge>
             </div>
-          </div>}
-
-
-          {<Notifications
-            notifications={notifications}
-            reloadNotifications={setNotifications}
-            showNotifications={showNotifications}
-            setShowNotifications={setShowNotifications}
-            refresh={getUserNotifications}
-          />}
-
+          )}
         </div>
 
-
-
-        {/* Bottom profile section */}
+        {/* Right section */}
         <div className="flex items-center space-x-4">
           {isLoggedIn && (
             <Link
               to={user?.role === "admin" ? "/admin" : "/profile"}
-              className="flex items-center space-x-2 hover:bg-gray-800 px-3 py-2 rounded transition"
+              className="flex items-center space-x-2"
             >
-              {/* Profile Picture */}
-              <img src={user?.profilePicture} className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-lg font-bold uppercase text-white">
-                
-              </img>
-
-              {/* Username beside the picture */}
-              <span className="text-base font-medium hidden md:inline">
-                {user?.name}
-              </span>
+              <img
+                src={user?.profilePicture}
+                className="w-10 h-10 rounded-full bg-blue-500"
+                alt="avatar"
+              />
+              <span className="text-base hidden md:inline">{user?.name}</span>
             </Link>
           )}
 
-          {/* Logout/Login button */}
           <button
             onClick={handleLogout}
-            className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded transition"
+            className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded"
           >
             {isLoggedIn ? "Logout" : "Login"}
           </button>
         </div>
       </div>
+
+      {/* Notifications Component */}
+      <Notifications
+        notifications={notifications}
+        reloadNotifications={setNotifications}
+        showNotifications={showNotifications}
+        setShowNotifications={setShowNotifications}
+        refresh={fetchNotifications}
+      />
     </>
   );
 };
