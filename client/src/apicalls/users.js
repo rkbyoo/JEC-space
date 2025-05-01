@@ -66,3 +66,12 @@ export const UpdateUserStatus = async (id, status) => {
 // }
 
 //}
+
+export const SendOTP=async(email)=>{
+  try {
+    const response=await axiosInstance.post("/users/sendotp",email)
+    return response.data;
+  } catch (error) {
+    return error.response.data.message
+  }
+}

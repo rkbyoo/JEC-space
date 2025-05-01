@@ -92,7 +92,7 @@ function ProfileInfo() {
                 localStorage.removeItem("token")
                 navigate('/login')
             } else {
-                message.error(res.message || "Failed to delete account")
+                message.error(res || "Failed to delete account")
             }
         } catch (err) {
             message.error("Error deleting account")
