@@ -11,6 +11,7 @@ const {
   sendOTP
 } = require("../controllers/authN");
 const { authZ } = require("../middlewares/authZ");
+const {getAllResponses,saveResponse}=require("../controllers/contact")
 
 //signup the user with route /signup
 router.post("/signup", signUp);
@@ -27,5 +28,10 @@ router.put("/update-user-status/:id", authZ, updateUserStatus);
 
 //otp send route
 router.post("/sendOTP",sendOTP)
+
+
+router.get("/get-all-responses",authZ,getAllResponses)
+
+router.post("/save-response",saveResponse)
 
 module.exports = router;
