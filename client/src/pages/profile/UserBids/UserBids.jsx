@@ -4,16 +4,16 @@ import { Modal, Table, message } from 'antd'
 import { useDispatch } from 'react-redux';
 
 import moment from 'moment'; // Ensure moment is imported
-import useSelection from 'antd/es/table/hooks/useSelection';
+import { useSelector } from 'react-redux';
 import { getAllBids } from '../../../apicalls/bid';
 import { SetLoader } from '../../../redux/loadersSlice';
 
 function UserBids() {
     const dispatch = useDispatch();
     const [bidsData, setBidsData] = useState([]);
-    const { user } = useSelection((state) => state.users);
+    const { user } = useSelector((state) => state.users);
 
-
+    
     const getData = async () => {
         try {
             dispatch(SetLoader(true));
