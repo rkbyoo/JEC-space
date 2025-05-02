@@ -24,7 +24,7 @@ router.post("/add-product", authZ, addProduct);
 router.get("/get-every-product", authZ, getEveryProduct);
 
 //get all product with route /get-products (category and age based)
-router.get("/get-all-product", authZ, getAllProduct);
+router.post("/get-all-product", authZ, getAllProduct);
 
 //get user products by id with route /get-user-product/:id
 router.get("/get-user-product/:id", authZ, getUserProduct);

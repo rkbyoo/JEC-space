@@ -75,41 +75,103 @@ exports.getEveryProduct = async (req, res) => {
 };
 
 //get all product details
+// exports.getAllProduct = async (req, res) => {
+//   try {
+//     const { status, categories = [], age = []} = req.body;
+//     let filters = {};
+//     // if (seller) {
+//     //   filters.seller = seller;
+//     // }
+//     if (status) {
+//       filters.status = status;
+//     }
+//     if(categories.length>0)
+//     {
+//       categories.map((category)=>{
+//         filters.category=true;
+//       })
+//     }
+//     console.log(filters);
+//     const products = await Product.find(filters)
+//       .populate("seller")
+//       .sort({ createdAt: -1 });
+//     if (!products) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "no products available",
+//       });
+//     }
+//     return res.status(200).json({
+//       success: true,
+//       message: "All the Products are fetched successfully",
+//       data: products,
+//     });
+//     //filter by category
+
+//     //filter by age of the product
+//   } catch (error) {
+//     console.error("some error while getting product", error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "internal server error in getting the products",
+//     });
+//   }
+// };
 exports.getAllProduct = async (req, res) => {
   try {
-    const { seller, categories = [], age = [], status } = req.body;
+    const { status, category = [], age = [] } = req.body;
+
     let filters = {};
-    if (seller) {
-      filters.seller = seller;
+    if (req.body.search) {
+      filters.name = { $regex: req.body.search, $options: "i" }; // case-insensitive search
     }
+
     if (status) {
       filters.status = status;
     }
-    const products = await Product.find({ status: "approved" })
+
+    if (category.length > 0) {
+      filters.category = { $in: category };
+    }
+
+    if (age.length > 0) {
+      const ageFilters = age.map((range) => {
+        const [min, max] = range.split('-').map(Number);
+        return {
+          age: { $gte: min, $lte: max },
+        };
+      });
+
+      filters.$or = ageFilters;
+    }
+
+    console.log("Filters applied:", filters);
+
+    const products = await Product.find(filters)
       .populate("seller")
       .sort({ createdAt: -1 });
+
     if (!products) {
       return res.status(404).json({
         success: false,
-        message: "no products available",
+        message: "No products available",
       });
     }
+
     return res.status(200).json({
       success: true,
-      message: "All the Products are fetched successfully",
+      message: "All the products are fetched successfully",
       data: products,
     });
-    //filter by category
-
-    //filter by age of the product
   } catch (error) {
-    console.error("some error while getting product", error);
+    console.error("Error while getting products", error);
     return res.status(500).json({
       success: false,
-      message: "internal server error in getting the products",
+      message: "Internal server error in getting the products",
     });
   }
 };
+
 
 //get Product details for single user
 exports.getUserProduct = async (req, res) => {
