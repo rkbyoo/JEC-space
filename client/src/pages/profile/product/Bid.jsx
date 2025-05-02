@@ -134,13 +134,7 @@ function Bid({ showBidsModal, setShowBidsModal, selectedProduct }) {
       title: "Counter-Offer Amount",
       dataIndex: "bidAmount",
     },
-    {
-      title: "Counter-Offer Date",
-      dataIndex: "createdAt",
-      render: (text, record) => {
-        return moment(text).format("DD-MM-YYYY hh:mm A");
-      },
-    },
+
     {
       title: "Message",
       dataIndex: "message",
