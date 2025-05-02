@@ -4,6 +4,7 @@ import Products from './Products'
 import Users from './Users'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import ContactResponse from './ContactResponse'
 
 
 const Admin = () => {
@@ -24,6 +25,9 @@ const Admin = () => {
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Users" key="2">
                     <Users />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="User Responses" key="3">
+                    <ContactResponse />
                 </Tabs.TabPane>
             </Tabs>
         </div>
