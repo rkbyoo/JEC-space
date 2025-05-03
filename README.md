@@ -55,7 +55,7 @@ JEC-SPACE is a **mini project for the 6th semester at Jorhat Engineering College
 
 4. **Environment Variables:**
 
-   Create a `.env` file in the `server` directory with the following for backend:
+   Create a `.env` file in the `server` directory with the following:
 
    ```
    MAIL_USER=your_email@gmail.com
@@ -70,7 +70,7 @@ JEC-SPACE is a **mini project for the 6th semester at Jorhat Engineering College
    CLIENT_ORIGIN=https://your_client_url
    ```
 
-   for frontend:
+   Create a `.env` file in the `client` directory with the following:
    ```
    VITE_API_URL=https://backend_deployed_url/api
    ```
