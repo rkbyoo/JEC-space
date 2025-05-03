@@ -1,7 +1,7 @@
 // botservices.jsx
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'; // Define your API base URL
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'; // Define your API base URL
 
 export const getBotResponse = async (message, mode, sessionId, availableProducts) => {
   try {
@@ -9,7 +9,7 @@ export const getBotResponse = async (message, mode, sessionId, availableProducts
     const validMode = ['formal', 'sassy'].includes(mode) ? mode : 'formal';
 
     // Call the correct endpoint with proper parameters
-    const response = await axios.post(`${API_BASE_URL}/api/bot/ask`, {
+    const response = await axios.post(`${API_BASE_URL}/bot/ask`, {
       message,
       personality: validMode,
       sessionId: sessionId,
