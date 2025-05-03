@@ -5,7 +5,6 @@ import { App as AntdApp, ConfigProvider } from 'antd';
 import { Provider } from 'react-redux';
 import { StrictMode } from 'react';
 import store from './redux/store';
-import { Analytics } from '@vercel/analytics/react';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -21,11 +20,9 @@ createRoot(document.getElementById('root')).render(
           },
         }}
       >
-        <Analytics>
           <AntdApp>
             <App />
           </AntdApp>
-        </Analytics>
       </ConfigProvider>
     </Provider>
   </StrictMode>
