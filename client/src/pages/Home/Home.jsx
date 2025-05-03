@@ -7,7 +7,7 @@ import { ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Filters from './Filters';
 import { setFilters } from '../../redux/filtersSlice';
-import ChatBot from '../../components/chatbot';
+import ChatBot from '../../components/Chatbot';
 
 function Home() {
   const dispatch = useDispatch();
