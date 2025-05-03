@@ -36,8 +36,8 @@ JEC-SPACE is a **mini project for the 6th semester at Jorhat Engineering College
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/jec-space.git
-   cd jec-space
+   git clone https://github.com/rkbyoo/JEC-space.git
+   cd JEC-space
    ```
 
 2. **Install dependencies:**
@@ -46,18 +46,16 @@ JEC-SPACE is a **mini project for the 6th semester at Jorhat Engineering College
      ```bash
      cd server
      npm i
-     npm run dev
      ```
    - Frontend:
      ```bash
      cd ../client
      npm i
-     npm run dev
      ```
 
 4. **Environment Variables:**
 
-   Create a `.env` file in the `server` directory with the following:
+   Create a `.env` file in the `server` directory with the following for backend:
 
    ```
    MAIL_USER=your_email@gmail.com
@@ -68,14 +66,21 @@ JEC-SPACE is a **mini project for the 6th semester at Jorhat Engineering College
    CLOUD_NAME=your_cloudinary_cloud_name
    API_KEY=your_cloudinary_api_key
    API_SECRET=your_cloudinary_api_secret
-   FOLDER_NAME=profilepicture
+   FOLDER_NAME=folder_name
+   CLIENT_ORIGIN=https://your_client_url
    ```
 
-5. **Run the application:**
+   for frontend:
+   ```
+   VITE_API_URL=https://backend_deployed_url/api
+   ```
+   
+
+6. **Run the application:**
    - Backend:
      ```bash
      cd server
-     npm start
+     npm run dev
      ```
    - Frontend:
      ```bash
@@ -83,7 +88,7 @@ JEC-SPACE is a **mini project for the 6th semester at Jorhat Engineering College
      npm run dev
      ```
 
-6. **Access the app:**  
+7. **Access the app:**  
    Open [http://localhost:5173](http://localhost:5173) in your browser, or use the [deployed version](https://jec-space.vercel.app/).
 
 ---
@@ -123,6 +128,11 @@ server/
 
 - **Mobile App:**  
   Plans to develop a native app using React Native for seamless mobile access.
+
+  - Native:
+     ```bash
+     cd ../native
+     ```
 
 ---
 
