@@ -6,10 +6,11 @@ import { ConfigProvider} from 'antd';
 import { Provider } from "react-redux";
 // import { StrictMode } from 'react'
 import store from "./redux/store";
+import { Analytics } from "@vercel/analytics/react"
 
 
 createRoot(document.getElementById('root')).render(
-  
+  <Analytics>
     <Provider store={store}>
      <ConfigProvider theme={{
       components:{
@@ -26,6 +27,5 @@ createRoot(document.getElementById('root')).render(
       
     </ConfigProvider>
    </Provider>
-  
-   
+   </Analytics>
 )
