@@ -4,6 +4,13 @@ JEC-SPACE is a **mini project for the 6th semester at Jorhat Engineering College
 
 ---
 
+## 🌐 Live Demo
+
+**Access the deployed app here:**  
+[https://jec-space.vercel.app/](https://jec-space.vercel.app/)
+
+---
+
 ## 🌟 Features
 
 - **User Authentication:** Secure signup, login, and OTP verification.
@@ -11,6 +18,7 @@ JEC-SPACE is a **mini project for the 6th semester at Jorhat Engineering College
 - **Contact & Support:** Contact form for queries and complaints.
 - **Admin Panel:** Manage users, products, and contact responses.
 - **Responsive UI:** Modern, mobile-friendly interface using Ant Design.
+- **Integrated Chatbot:** Get instant help and resolve doubts about the UI or platform features with the built-in chatbot for a better user experience.
 
 ---
 
@@ -76,7 +84,13 @@ JEC-SPACE is a **mini project for the 6th semester at Jorhat Engineering College
      ```
 
 6. **Access the app:**  
-   Open [http://localhost:5173](http://localhost:5173) in your browser.
+   Open [http://localhost:5173](http://localhost:5173) in your browser, or use the [deployed version](https://jec-space.vercel.app/).
+
+---
+
+## 💬 Chatbot Support
+
+JEC-SPACE features an integrated chatbot to assist users with any doubts or questions regarding the UI and platform usage. Click the chat button at the bottom right of the app to get instant help and enhance your experience.
 
 ---
 
