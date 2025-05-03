@@ -7,6 +7,7 @@ import { ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Filters from './Filters';
 import { setFilters } from '../../redux/filtersSlice';
+import ChatBot from '../../components/chatbot';
 
 function Home() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ function Home() {
 
   const [products, setProducts] = useState([]);
   const [showFilters, setShowFilters] = useState(true);
+  const [showChatbot,setShowChatbot]=useState(false);
 
   const getData = async () => {
     try {
@@ -44,6 +46,7 @@ function Home() {
           setShowFilters={setShowFilters}
           getData={getData}
       />}
+      
       <div className='flex flex-col gap-5 w-full'>
         <div className='flex gap-5 sticky h-fit top-24 z-10'>
           {!showFilters && (
@@ -126,8 +129,37 @@ function Home() {
             )
           })}
 
+          
+
         </div>
+
       </div>
+
+      <button
+        onClick={() => setShowChatbot(true)}
+        className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-5 py-3 rounded-full 
+                  shadow-xl hover:scale-105 hover:shadow-blue-400/50 transition-transform duration-300 flex items-center gap-2 group"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 group-hover:animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.983 9.983 0 01-7.391-3.308L3 20l1.308-2.609A9.983 9.983 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+        <span className="font-semibold">Chat with us</span>
+      </button>
+
+      {/* Chatbot Modal Overlay */}
+      {showChatbot && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex items-center justify-center">
+          <div className="w-[90%] max-w-md h-[500px] rounded-xl shadow-xl p-4 relative overflow-hidden">
+            <button
+              onClick={() => setShowChatbot(false)}
+              className="absolute top-3 right-7 text-green-400 hover:text-gray-800 text-xl font-bold"
+            >
+              &times;
+            </button>
+            <ChatBot />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

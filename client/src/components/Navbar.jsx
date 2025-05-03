@@ -12,7 +12,6 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [notifications = [], setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -119,7 +118,6 @@ const Navbar = () => {
             </div>
           )}
         </div>
-
         {/* Right section */}
         <div className="flex items-center space-x-4">
           {isLoggedIn && (
