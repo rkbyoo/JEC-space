@@ -48,7 +48,7 @@ const chatWithBot = async (req, res) => {
     if (conversationHistory.length === 1 && availableProducts.length > 0) {
       conversationHistory.unshift({
         role: "system",
-        content: `You are a helpful assistant for an eCommerce site.Politely deny answers to irrelevant questions. Use the following product list as context:\n\n${output}`
+        content: `You are a helpful assistant for campus market Place website.Politely deny answers to irrelevant questions. Use the following product list as context:\n\n${output}`
       });
     }
 
