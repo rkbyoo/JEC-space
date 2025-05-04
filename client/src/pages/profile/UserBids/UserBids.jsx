@@ -37,7 +37,7 @@ function UserBids() {
             title: "Product",
             dataIndex: "product",
             render: (text, record) => {
-                return record.product.name;
+                return record.product?.name || 'N/A';
             },
         },
         {
@@ -53,7 +53,7 @@ function UserBids() {
             render: (text, record) => {
                 return (
                     <div>
-                        <p>{record.seller?.name || 'N/A'}</p> {/* Use buyer.phone */}
+                        <p>{record.seller?.name || 'N/A'}</p>
                     </div>
                 );
             }
@@ -62,7 +62,7 @@ function UserBids() {
             title: "Offered Price",
             dataIndex: "offeredPrice",
             render: (text, record) => {
-                return record.product.price;
+                return record.product?.price !== undefined ? record.product.price : 'N/A';
             }
         },
         {
@@ -79,8 +79,8 @@ function UserBids() {
             render: (text, record) => {
                 return (
                     <div>
-                        <p>Phone: {record.mobile || 'N/A'}</p> {/* Use buyer.phone */}
-                        <p>Email: {record.buyer?.email}</p>
+                        <p>Phone: {record.mobile || 'N/A'}</p>
+                        <p>Email: {record.buyer?.email || 'N/A'}</p>
                     </div>
                 );
             },
