@@ -103,7 +103,7 @@ function Home() {
                     <p className="text-sm text-gray-400 line-clamp-2">{product.description}</p>
                     <div className="flex items-center justify-between mt-2">
                       <span className="text-lg font-semibold text-blue-600">
-                        ${product.price.toFixed(2)}
+                      ₹ {product.price.toFixed(2)}
                       </span>
                       <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-300">
                         <button className="p-2 text-sm border rounded-lg border-solid border-blue-600 text-blue-600 font-medium hover:text-blue-800 hover:border-blue-800 transition-colors"

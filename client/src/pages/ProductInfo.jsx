@@ -105,7 +105,7 @@ function ProductInfo() {
                   <div className="flex justify-between items-center py-2">
                     <span className="text-gray-300">Price</span>
                     <span className="text-2xl font-bold text-blue-400">
-                      ${product?.price}
+                    ₹ {product?.price}
                     </span>
                   </div>
 
