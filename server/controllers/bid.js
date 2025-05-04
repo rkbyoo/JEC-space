@@ -6,10 +6,18 @@ const Bid = require("../models/bidModel");
 
 const placeBid = async (req, res) => {
   try {
-    //get the data from body
-    const newBid = new Bid(req.body);
+    // Get the data from body
+    const { mobile, ...rest } = req.body;
+    // Convert mobile to string for WhatsApp URL
+    const whatsappUrl = `https://wa.me/${mobile.toString()}`;
+    // Create new bid with whatsapp field
+    const newBid = new Bid({
+      ...rest,
+      mobile,
+      whatsapp: whatsappUrl,
+    });
 
-    //save the data in Bid database
+    // Save the data in Bid database
     await newBid.save();
     //send notification to admin for approval of this new product ,it can be included in notification contoller as well but for now let it be here
     return res.status(200).json({

@@ -24,6 +24,11 @@ const bidSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
+    whatsapp:{
+        type:String,
+        required:true,
+        default:""
+    }
 },{
     timestamps:true
 }
