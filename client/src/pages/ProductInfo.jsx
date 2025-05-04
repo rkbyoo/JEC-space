@@ -1,123 +1,3 @@
-// import React, { useEffect, useState } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { GetProducts, GetSingleProduct } from '../apicalls/products'
-// import { message, Divider } from 'antd';
-// import { SetLoader } from '../redux/loadersSlice';
-// import { useNavigate, useParams } from 'react-router-dom';
-
-// function ProductInfo() {
-//   const {id} = useParams();
-//   const [product,setProduct] = useState(null);
-//   const [selectedImageIndex,setSelectedImageIndex] = useState(0);
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-//   const getData = async () => {
-//     try {
-//       dispatch(SetLoader(true));
-//       const singleProduct = await GetSingleProduct(id);
-//       dispatch(SetLoader(false));
-//       setProduct(singleProduct.data);
-//     } catch (error) {
-//       dispatch(SetLoader(false));
-//       message.error(error.message);
-//     }
-//   }
-//   useEffect(()=>{
-//     getData();
-//   },[])
-//   return (
-//     <div className='h-screen'>
-//       <div className="grid grid-cols-2 gap-5">
-//         {/* images */}
-//         <div className="flex flex-col gap-5">
-//             <img
-//               src={product?.images[selectedImageIndex]}
-//               className="w-full h-96 object-cover rounded-md"
-//               alt=""
-//             />
-
-//           <div className="flex gap-5">
-//             {product?.images.map((image, index) => {
-//               return (
-//                 <img
-//                   key={index}
-//                   className={`w-20 h-20 object-cover rounded-md cursor-pointer ${
-//                     selectedImageIndex === index ? "border-2 border-green-700 border-dashed p-2" : ""
-//                   }`}
-//                   onClick={() => setSelectedImageIndex(index)}
-//                   src={image}
-//                   alt=""
-//                 />
-//               );
-//             })}
-//           </div>
-//         </div>
-
-//         {/* details */}
-
-//         <div className="flex flex-col gap-3">  
-//             <div>
-//               <h1 className="text-2xl font-semibold text-orange-900">
-//                 {product?.name}
-//               </h1>
-//               <span>{product?.description}</span>
-//             </div>
-
-//             <Divider/>
-
-//             <div className="flex flex-col">
-//               <h1 className="text-2xl font-semibold text-orange-900">
-//                 Product Details
-//               </h1>
-//               <div className="flex justify-between mt-2">
-//                   <span>Price</span>
-//                   <span>$ {product?.price}</span>
-//               </div>
-//               <div className="flex justify-between mt-2">
-//                   <span>Category</span>
-//                   <span>{product?.category}</span>
-//               </div>
-//               <div className="flex justify-between mt-2">
-//                   <span>Bill Available</span>
-//                   <span>{product?.billAvailable ? "Yes" : "No"}</span>
-//               </div>
-//               <div className="flex justify-between mt-2">
-//                   <span>Box Available</span>
-//                   <span>{product?.boxAvailable ? "Yes" : "No"}</span>
-//               </div>
-//               <div className="flex justify-between mt-2">
-//                   <span>Accessories Available</span>
-//                   <span>{product?.accessoriesAvailable ? "Yes" : "No"}</span>
-//               </div>
-//               <div className="flex justify-between mt-2">
-//                   <span>Warranty Available</span>
-//                   <span>{product?.warrantyAvailable ? "Yes" : "No"}</span>
-//               </div>
-//             </div>
-
-//             <Divider/>
-
-//             <div className="flex flex-col">
-//               <h1 className="text-2xl font-semibold text-orange-900">
-//                 Seller Details
-//               </h1>
-//               <div className="flex justify-between mt-2">
-//                   <span>Name</span>
-//                   <span className='uppercase'>{product?.seller.name}</span>
-//               </div>
-//               <div className="flex justify-between mt-2">
-//                   <span>Email</span>
-//                   <span>{product?.seller.email}</span>
-//               </div>
-//             </div>
-//           </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default ProductInfo
-
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetSingleProduct } from '../apicalls/products';
@@ -290,24 +170,6 @@ function ProductInfo() {
 
               <Divider />
 
-              {/* <div className="flex flex-col">
-                  <div className="flex justify-between">
-                    <h1 className="m-0 p-0 text-lg font-semibold text-white ml-2">Try making a counter offer?</h1>
-                    <Button 
-                    className={`${
-                      user._id === product?.seller._id
-                        ? 'bg-red-500 cursor-not-allowed text-white border-none'
-                        : ''
-                    }`}
-                    onClick={()=> setShowAddNewBid(!showAddNewBid)}
-                      disabled = {user._id === product?.seller._id}
-                      >
-                      <span className="text-white">Make a Counter Offer</span>
-                    </Button>
-                  </div>
-              </div> */}
-
-
               <div className="flex flex-col">
                 <div className="flex justify-between items-center">
                   <h1 className="text-lg font-semibold text-white">Try making a counter offer?</h1>
@@ -340,11 +202,12 @@ function ProductInfo() {
 
 
               {product?.showOffersOnProduct && product?.bids?.map((bid, index) => {
+                if (!bid?.buyer) return null; // Skip bids with no buyer
                 return (
                   <div key={index} className="border border-gray-700 border-solid p-3 rounded bg-gray-800">
                     <div className="flex justify-between text-gray-700">
                       <span className="text-gray-300">Name</span>
-                      <span className="text-gray-400">{bid?.buyer.name}</span>
+                      <span className="text-gray-400">{bid.buyer.name}</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
                       <span className="text-gray-300">Counter-offer Amount</span>
@@ -353,7 +216,6 @@ function ProductInfo() {
                     <div className="flex justify-between text-gray-600">
                       <span className="text-gray-300">Bid Place On</span>
                       <span className="text-gray-400">
-                        {" "}
                         {moment(bid?.createdAt).format("DD-MM-YYYY hh:mm A")}
                       </span>
                     </div>

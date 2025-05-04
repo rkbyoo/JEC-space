@@ -90,7 +90,7 @@ exports.deleteAccount = async (req, res) => {
     if (await bcrypt.compare(confirmPassword,user.password)) {
       await Product.deleteMany({ seller: userId })
       await Notification.deleteMany({ user: userId })
-      // await Offer.findOneAndDelete({seller:userId})
+      await Offer.deleteMany({seller:userId})
       //delete the entry from user database
       await User.findByIdAndDelete(userId)
       //return res
