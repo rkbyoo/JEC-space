@@ -46,16 +46,17 @@ function ProductForm({ showProductForm, setShowProductForm, selectedProduct, set
   const [images,setImages] = useState(addedProduct?.images || selectedProduct?.images);
   //const [showBidsOnProductPage, setShowBidsOnProductPage] = useState(true);
   useEffect(() => {
-    if (selectedProduct) {
-      formRef.current.setFieldsValue(selectedProduct);
+    // Only run if not in delete mode and formRef is available
+    if (!deleteProduct && formRef.current) {
+      if (selectedProduct) {
+        formRef.current.setFieldsValue(selectedProduct);
+      } else {
+        formRef.current.setFieldsValue({
+          showOffersOnProduct: true,
+        });
+      }
     }
-    else {
-      // default value when adding a new product
-      formRef.current.setFieldsValue({
-        showOffersOnProduct: true,
-      });
-    }
-  }, [selectedProduct]);
+  }, [selectedProduct, deleteProduct]);
   const updateImage = async (id) => {
     const newImages = images.filter((image,index)=> id!==index)
       try {
