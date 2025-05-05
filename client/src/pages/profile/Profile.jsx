@@ -11,10 +11,10 @@ function Profile() {
         <Tabs.TabPane tab="Profile" key="1">
           <ProfileInfo />
         </Tabs.TabPane>
-        <Tabs.TabPane tab="Products" key="2">
+        <Tabs.TabPane tab="My Products" key="2">
           <Products />
         </Tabs.TabPane>
-        <Tabs.TabPane tab="Offers" key="3">
+        <Tabs.TabPane tab="Offers sent" key="3">
           <UserBids />
         </Tabs.TabPane>
 
