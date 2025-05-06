@@ -153,7 +153,7 @@ exports.login = async (req, res) => {
 
     //create and assign token
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+      expiresIn: "10d"
     });
     //send res
     return res.status(200).json({

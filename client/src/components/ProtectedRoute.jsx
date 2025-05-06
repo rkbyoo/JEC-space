@@ -16,21 +16,23 @@ function ProtectedRoute({ children }) {
     //validate function will make a api request using getcurrentuser instance and tell us that if the token is present or not and on the basis of that the user will be logged in
     const validateToken = async () => {
         try {
-            dispatch(SetLoader(true))
-            const response = await GetCurrentUser()
-            console.log("response i got from getcurrentuser:", response.data)
-            dispatch(SetLoader(false))
+            dispatch(SetLoader(true));
+            const response = await GetCurrentUser();
+            dispatch(SetLoader(false));
             if (response.success) {
-                dispatch(SetUser(response.data))
-                // navigate("/")
-            }
-            else {
-                message.error("token is not valid")
-                navigate("/login")
+                dispatch(SetUser(response.data));
+            } else {
+                localStorage.removeItem("token");
+                dispatch(SetUser(null)); // Clear user state
+                message.error("Session expired. Please login again.");
+                navigate("/login");
             }
         } catch (error) {
-            dispatch(SetLoader(false))
-            message.error(error.message)
+            dispatch(SetLoader(false));
+            localStorage.removeItem("token");
+            dispatch(SetUser(null)); // Clear user state
+            message.error("Session expired. Please login again.");
+            navigate("/login");
         }
     }
 
@@ -40,6 +42,7 @@ function ProtectedRoute({ children }) {
             validateToken()
         }
         else {
+            dispatch(SetUser(null)); // Clear user state if no token
             message.error("You are not logged in")
             navigate("/login")
         }
