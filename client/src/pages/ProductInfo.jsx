@@ -211,7 +211,7 @@ function ProductInfo() {
                     </div>
                     <div className="flex justify-between text-gray-600">
                       <span className="text-gray-300">Counter-offer Amount</span>
-                      <span className="text-gray-400">$ {bid?.bidAmount}</span>
+                      <span className="text-gray-400">₹{bid?.bidAmount}</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
                       <span className="text-gray-300">Bid Place On</span>
