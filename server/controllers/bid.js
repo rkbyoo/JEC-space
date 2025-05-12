@@ -22,7 +22,7 @@ const placeBid = async (req, res) => {
     //send notification to admin for approval of this new product ,it can be included in notification contoller as well but for now let it be here
     return res.status(200).json({
       success: true,
-      message: "Bid placed successfully",
+      message: "offer sent successfully",
       bid: newBid,
     });
 
