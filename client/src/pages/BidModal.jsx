@@ -21,12 +21,12 @@ function BidModal({ showBidModal, setShowBidModal, product, reloadData }) {
             })
             dispatch(SetLoader(false));
             if (response.success) {
-                message.success("Bid added successfully");
+                message.success("offer added successfully");
                 reloadData();
                 setShowBidModal(false);
                 await addNotification({
-                    title: "A New bid has been placed!",
-                    message: `A New bid has been placed on your product ${product.name} by ${user.name} for ${values.bidAmount}`,
+                    title: "You got a New Offer!",
+                    message: `you recieved a new offer on your product ${product.name} by ${user.name} for ${values.bidAmount}`,
                     user: product?.seller._id,
                     onClick: "/profile",
                     read: false
@@ -50,7 +50,7 @@ function BidModal({ showBidModal, setShowBidModal, product, reloadData }) {
         >
             <div className='flex flex-col gap-5 mb-5'>
                 <h1 className='text-2xl font-semibold text-orange-900 text-center'>
-                    New Bid
+                    make an offer
                 </h1>
 
                 <Form layout="vertical" ref={formref} onFinish={onFinish}>
