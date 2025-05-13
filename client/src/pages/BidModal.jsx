@@ -26,7 +26,7 @@ function BidModal({ showBidModal, setShowBidModal, product, reloadData }) {
                 setShowBidModal(false);
                 await addNotification({
                     title: "You got a New Offer!",
-                    message: `you recieved a new offer on your product ${product.name} by ${user.name} for ${values.bidAmount}`,
+                    message: `you recieved a new offer on your product ${product.name} by ${user.name} for ₹${values.bidAmount}`,
                     user: product?.seller._id,
                     onClick: "/profile",
                     read: false
