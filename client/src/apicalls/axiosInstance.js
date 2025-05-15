@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { SetUser } from '../redux/usersSlice';
+import store from '../redux/store';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api', // Use env var if set
